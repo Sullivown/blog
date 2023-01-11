@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -8,13 +6,18 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 var cors = require('cors');
 
+require('dotenv').config();
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+require('./auth/auth');
 
 var app = express();
 
 // Set up mongoose connection
 const mongoDB = process.env.DB_CONNECT;
+mongoose.set('strictQuery', false);
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
