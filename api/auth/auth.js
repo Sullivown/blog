@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User');
 
 passport.use(
+	'login',
 	new LocalStrategy(
 		{ usernameField: 'email', passwordField: 'password' },
 		(email, password, done) => {
@@ -16,7 +17,9 @@ passport.use(
 					});
 				}
 				if (User.isValidPassword(password)) {
-					return;
+					return done(null, user, {
+						message: 'Logged in successfully',
+					});
 				}
 			});
 		}
