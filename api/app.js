@@ -9,6 +9,7 @@ const passport = require('passport');
 
 require('dotenv').config();
 require('./auth/auth');
+require('./auth/tokenAuth');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');

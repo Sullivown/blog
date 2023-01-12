@@ -67,29 +67,43 @@ router.post('/signup', [
 
 router.post('/login', function (req, res, next) {
 	passport.authenticate('login', { session: false }, (err, user, info) => {
+		console.log(req.body);
 		if (err || !user) {
 			return res.status(400).json({
-				message: 'Something is not right',
-				user,
+				message: 'Authentication error',
 				err,
-				info,
 			});
 		}
 
 		req.login(user, { session: false }, (err) => {
 			if (err) {
-				res.send(err);
+				res.status(400).json({ message: 'Login Error', err });
 			}
 
 			const body = {
-				_id: user.id,
+				first_name: user.first_name,
+				last_name: user.last_name,
 				email: user.email,
 			};
 
-			const token = jwt.sign({ user: body }, process.env.SECRET_KEY);
-			return res.json({ token });
+			const token = jwt.sign(
+				{ sub: user.id, user: body },
+				process.env.SECRET_KEY
+			);
+			return res.json({ message: 'Login successful', token });
 		});
 	})(req, res, next);
 });
+
+router.get(
+	'/protected',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		res.json({
+			message: 'You have accessed a restricted resource! Hooray!',
+			user: req.user,
+		});
+	}
+);
 
 module.exports = router;
