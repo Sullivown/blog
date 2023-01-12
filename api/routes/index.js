@@ -1,7 +1,9 @@
 const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 router.get('/', function (req, res) {
 	res.json({ message: 'Welcome to the API' });
@@ -57,13 +59,37 @@ router.post('/signup', [
 			if (err) {
 				return next(err);
 			}
-			res.redirect('/');
 		});
+
+		res.json({ message: 'User created successfully' });
 	},
 ]);
 
-router.post('/login', function (req, res) {
-	res.json({ message: 'login post route' });
+router.post('/login', function (req, res, next) {
+	passport.authenticate('login', { session: false }, (err, user, info) => {
+		if (err || !user) {
+			return res.status(400).json({
+				message: 'Something is not right',
+				user,
+				err,
+				info,
+			});
+		}
+
+		req.login(user, { session: false }, (err) => {
+			if (err) {
+				res.send(err);
+			}
+
+			const body = {
+				_id: user.id,
+				email: user.email,
+			};
+
+			const token = jwt.sign({ user: body }, process.env.SECRET_KEY);
+			return res.json({ token });
+		});
+	})(req, res, next);
 });
 
 module.exports = router;

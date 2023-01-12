@@ -15,17 +15,17 @@ UserSchema.virtual('url').get(function () {
 	return `/user/${this.id}`;
 });
 
-UserSchema.pre('save', (next) => {
+UserSchema.pre('save', async function (next) {
 	const user = this;
-	const hash = bcrypt.hash(this.password, 10);
+	const hash = await bcrypt.hash(this.password, 10);
 
 	this.password = hash;
 	next();
 });
 
-UserSchema.methods.isValidPassword = (password) => {
+UserSchema.methods.isValidPassword = async function (password) {
 	const user = this;
-	const compare = bcrypt.compare(password, user.password);
+	const compare = await bcrypt.compare(password, user.password);
 
 	return compare;
 };
