@@ -13,6 +13,7 @@ require('./auth/tokenAuth');
 
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
+const postRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
 
 const app = express();
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use('/posts', postRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

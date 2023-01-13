@@ -61,7 +61,6 @@ exports.auth_signup_post = [
 
 exports.auth_login_post = function (req, res, next) {
 	passport.authenticate('login', { session: false }, (err, user, info) => {
-		console.log(req.body);
 		if (err || !user) {
 			return res.status(400).json({
 				message: 'Authentication error',
@@ -83,7 +82,7 @@ exports.auth_login_post = function (req, res, next) {
 			const token = jwt.sign(
 				{ sub: user.id, user: body },
 				process.env.SECRET_KEY,
-				{ expiresIn: '7d ' }
+				{ expiresIn: '7d' }
 			);
 			return res.json({ message: 'Login successful', token });
 		});
