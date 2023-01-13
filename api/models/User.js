@@ -12,7 +12,7 @@ const UserSchema = new Schema({
 });
 
 UserSchema.virtual('url').get(function () {
-	return `/user/${this.id}`;
+	return `/users/${this.id}`;
 });
 
 UserSchema.pre('save', async function (next) {
