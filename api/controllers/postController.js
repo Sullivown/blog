@@ -9,7 +9,7 @@ const Comment = require('../models/Comment');
 
 exports.post_list = function (req, res, next) {
 	Post.find()
-		.populate('user')
+		.populate({ path: 'user', select: 'first_name last_name' })
 		.sort([['creation_date', 'ascending']])
 		.exec(function (err, list_posts) {
 			if (err) {
@@ -56,4 +56,47 @@ exports.post_create_get = function (req, res, next) {
 	res.json({ message: 'Request successful', statusValues });
 };
 
-// exports.post_create_post = [];
+exports.post_create_post = [
+	body('title')
+		.trim()
+		.isLength({ min: 1 })
+		.withMessage('You must enter a title')
+		.escape(),
+	body('content')
+		.trim()
+		.isLength({ min: 1 })
+		.withMessage('Post content cannot be blank')
+		.escape(),
+	body('status')
+		.trim()
+		.isLength({ min: 1 })
+		.withMessage('You must enter a valid status')
+		.escape(),
+	(req, res, next) => {
+		const errors = validationResult(req);
+
+		const post = new Post({
+			title: req.body.title,
+			content: req.body.content,
+			status: req.body.status,
+			user: req.user._id,
+		});
+
+		if (!errors.isEmpty()) {
+			res.json({
+				message: 'Post creation failed',
+				post,
+				errors: errors.array(),
+			});
+			return;
+		}
+
+		post.save((err) => {
+			if (err) {
+				return next(err);
+			}
+		});
+
+		res.json({ message: 'post created successfully', post });
+	},
+];
