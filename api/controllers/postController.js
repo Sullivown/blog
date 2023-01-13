@@ -70,7 +70,7 @@ exports.post_create_post = [
 	body('status')
 		.trim()
 		.isLength({ min: 1 })
-		.equals('Draft' || 'Published')
+		.isIn(Post.schema.path('status').enumValues)
 		.withMessage('You must enter a valid status')
 		.escape(),
 	(req, res, next) => {
