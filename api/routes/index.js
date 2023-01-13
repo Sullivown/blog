@@ -1,13 +1,10 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
 
-router.get('/', function (req, res) {
-	res.json({ message: 'Welcome to the API' });
-});
+const index_controller = require('../controllers/indexController');
+
+router.get('/', index_controller.index_get);
 
 router.get(
 	'/protected',
