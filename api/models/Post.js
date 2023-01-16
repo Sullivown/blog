@@ -11,6 +11,7 @@ const PostSchema = new Schema({
 		enum: ['Published', 'Draft'],
 		default: 'Draft',
 	},
+	comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 	user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 	creation_date: { type: Date, default: Date.now },
 });

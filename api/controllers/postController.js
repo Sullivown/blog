@@ -1,12 +1,8 @@
-const passport = require('passport');
 const { body, validationResult } = require('express-validator');
 const async = require('async');
-const jwt = require('jsonwebtoken');
 
-const User = require('../models/User');
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
-const { findByIdAndUpdate } = require('../models/Post');
 
 exports.post_list = function (req, res, next) {
 	Post.find()
@@ -21,36 +17,24 @@ exports.post_list = function (req, res, next) {
 };
 
 exports.post_detail = function (req, res, next) {
-	console.log(req.params);
-	async.parallel(
-		{
-			post(callback) {
-				Post.findById(req.params.id).populate('user').exec(callback);
-			},
-			comments(callback) {
-				Comment.find({ post: req.params.id })
-					.populate('user')
-					.exec(callback);
-			},
-		},
-		(err, results) => {
+	Post.findById(req.params.id)
+		.populate('user')
+		.populate('comments')
+		.exec(function (err, post) {
 			if (err) {
 				return next(err);
 			}
-
-			if (!results.post) {
+			if (!post) {
 				res.status(404).json({
 					message: 'Post not found',
 				});
 			} else {
 				res.json({
-					message: 'Request successfull',
-					post: results.post,
-					comments: results.comments,
+					message: 'Request successful',
+					post,
 				});
 			}
-		}
-	);
+		});
 };
 
 exports.post_create_get = function (req, res, next) {
@@ -129,6 +113,7 @@ exports.post_update = [
 			title: req.body.title,
 			content: req.body.content,
 			status: req.body.status,
+			comments: req.body.comments,
 			user: req.user._id,
 		});
 
