@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
+const { findByIdAndUpdate } = require('../models/Post');
 
 exports.post_list = function (req, res, next) {
 	Post.find()
@@ -20,6 +21,7 @@ exports.post_list = function (req, res, next) {
 };
 
 exports.post_detail = function (req, res, next) {
+	console.log(req.params);
 	async.parallel(
 		{
 			post(callback) {
@@ -98,10 +100,61 @@ exports.post_create_post = [
 			}
 		});
 
-		res.json({ message: 'post created successfully', post });
+		res.json({ message: 'Post created successfully', post });
 	},
 ];
 
-exports.post_update = [];
+exports.post_update = [
+	body('title')
+		.trim()
+		.isLength({ min: 1 })
+		.withMessage('You must enter a title')
+		.escape(),
+	body('content')
+		.trim()
+		.isLength({ min: 1 })
+		.withMessage('Post content cannot be blank')
+		.escape(),
+	body('status')
+		.trim()
+		.isLength({ min: 1 })
+		.isIn(Post.schema.path('status').enumValues)
+		.withMessage('You must enter a valid status')
+		.escape(),
+	(req, res, next) => {
+		const errors = validationResult(req);
 
-exports.post_delete = [];
+		const post = new Post({
+			_id: req.params.id,
+			title: req.body.title,
+			content: req.body.content,
+			status: req.body.status,
+			user: req.user._id,
+		});
+
+		if (!errors.isEmpty()) {
+			res.json({
+				message: 'Post update failed',
+				post,
+				errors: errors.array(),
+			});
+			return;
+		}
+
+		Post.findByIdAndUpdate(req.params.id, post, (err, updatedPost) => {
+			if (err) {
+				return next(err);
+			}
+			res.json({ message: 'Post updated successfully', updatedPost });
+		});
+	},
+];
+
+exports.post_delete = function (req, res, next) {
+	Post.findByIdAndDelete(req.params.id, function (err, post) {
+		if (err) {
+			return next(err);
+		}
+		res.json({ message: 'Post deleted successfully' });
+	});
+};
