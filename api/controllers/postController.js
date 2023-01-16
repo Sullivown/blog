@@ -101,3 +101,7 @@ exports.post_create_post = [
 		res.json({ message: 'post created successfully', post });
 	},
 ];
+
+exports.post_update = [];
+
+exports.post_delete = [];
