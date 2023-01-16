@@ -5,7 +5,10 @@ const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 
 module.exports.comment_list = function (req, res, next) {
-	Comment.find({ post: req.params.id }).exec(function (err, list_comments) {
+	Comment.find({ post: req.params.postId }).exec(function (
+		err,
+		list_comments
+	) {
 		if (err) {
 			return next(err);
 		}
@@ -50,17 +53,18 @@ module.exports.comment_create = [
 		}
 
 		Post.findById(req.params.postId).exec(function (err, post) {
-			console.log(post);
 			if (err) {
 				return next(err);
 			}
-			post.comments.push(comment);
-			console.log(post.comments);
+
 			comment.save((err) => {
 				if (err) {
 					return next(err);
 				}
 			});
+
+			post.comments.push(comment);
+
 			post.save((err) => {
 				if (err) {
 					return next(err);
@@ -72,6 +76,46 @@ module.exports.comment_create = [
 	},
 ];
 
-module.exports.comment_update = [];
+module.exports.comment_update = [
+	body('content')
+		.trim()
+		.isLength({ min: 1 })
+		.withMessage('Comment content cannot be blank')
+		.escape(),
+	(req, res, next) => {
+		const errors = validationResult(req);
+
+		const comment = new Comment({
+			_id: req.params.id,
+			post: req.params.postId,
+			content: req.body.content,
+			user: req.user._id,
+		});
+
+		if (!errors.isEmpty()) {
+			res.json({
+				message: 'Comment creation failed',
+				comment,
+				errors: errors.array(),
+			});
+			return;
+		}
+
+		Comment.findByIdAndUpdate(
+			req.params.id,
+			comment,
+			(err, updatedComment) => {
+				if (err) {
+					console.log(err);
+					return next(err);
+				}
+				res.json({
+					message: 'Comment updated successfully',
+					comment: updatedComment,
+				});
+			}
+		);
+	},
+];
 
 module.exports.comment_delete = [];

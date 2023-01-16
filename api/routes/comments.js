@@ -12,6 +12,12 @@ router.post(
 	commentController.comment_create
 );
 
+router.put(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	commentController.comment_update
+);
+
 router.get('/:id', commentController.comment_detail);
 
 module.exports = router;
