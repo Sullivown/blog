@@ -4,7 +4,10 @@ const passport = require('passport');
 
 const post_controller = require('../controllers/postController');
 
-/* GET users listing. */
+const commentRouter = require('../routes/comments');
+
+//router.use('/:id/comments', commentRouter);
+
 router.get('/', post_controller.post_list);
 
 router.post(

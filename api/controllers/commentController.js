@@ -35,7 +35,7 @@ module.exports.comment_create = [
 		const errors = validationResult(req);
 
 		const comment = new Comment({
-			post: req.body.postId,
+			post: req.params.postId,
 			content: req.body.content,
 			user: req.user._id,
 		});
@@ -49,13 +49,26 @@ module.exports.comment_create = [
 			return;
 		}
 
-		comment.save((err) => {
+		Post.findById(req.params.postId).exec(function (err, post) {
+			console.log(post);
 			if (err) {
 				return next(err);
 			}
+			post.comments.push(comment);
+			console.log(post.comments);
+			comment.save((err) => {
+				if (err) {
+					return next(err);
+				}
+			});
+			post.save((err) => {
+				if (err) {
+					return next(err);
+				}
+			});
 		});
 
-		res.json({ message: 'Comment created successfully', post });
+		res.json({ message: 'Comment created successfully', comment });
 	},
 ];
 

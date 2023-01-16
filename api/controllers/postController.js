@@ -7,6 +7,7 @@ const Comment = require('../models/Comment');
 exports.post_list = function (req, res, next) {
 	Post.find()
 		.populate({ path: 'user', select: 'first_name last_name' })
+		.populate('comments')
 		.sort([['creation_date', 'ascending']])
 		.exec(function (err, list_posts) {
 			if (err) {
@@ -18,7 +19,7 @@ exports.post_list = function (req, res, next) {
 
 exports.post_detail = function (req, res, next) {
 	Post.findById(req.params.id)
-		.populate('user')
+		.populate({ path: 'user', select: 'first_name last_name' })
 		.populate('comments')
 		.exec(function (err, post) {
 			if (err) {
@@ -29,6 +30,7 @@ exports.post_detail = function (req, res, next) {
 					message: 'Post not found',
 				});
 			} else {
+				console.log(post);
 				res.json({
 					message: 'Request successful',
 					post,
