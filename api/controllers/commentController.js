@@ -118,4 +118,32 @@ module.exports.comment_update = [
 	},
 ];
 
-module.exports.comment_delete = [];
+module.exports.comment_delete = function (req, res, next) {
+	async.parallel(
+		{
+			comment(callback) {
+				Comment.findById(req.params.id).exec(callback);
+			},
+			post(callback) {
+				Post.findById(req.params.postId).exec(callback);
+			},
+		},
+		(err, results) => {
+			if (err) {
+				return next(err);
+			}
+
+			results.post.comments.filter(
+				(comment) => comment != results.comment._id
+			);
+			results.post.save();
+
+			Comment.findByIdAndDelete(req.params.id, (err) => {
+				if (err) {
+					return next(err);
+				}
+				res.json({ message: 'Comment deleted sucessfully' });
+			});
+		}
+	);
+};

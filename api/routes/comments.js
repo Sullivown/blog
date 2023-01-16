@@ -18,6 +18,12 @@ router.put(
 	commentController.comment_update
 );
 
+router.delete(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	commentController.comment_delete
+);
+
 router.get('/:id', commentController.comment_detail);
 
 module.exports = router;
