@@ -3,8 +3,6 @@ const async = require('async');
 
 const User = require('../models/User');
 const Post = require('../models/Post');
-const Comment = require('../models/Comment');
-const { json } = require('express');
 
 module.exports.user_list = function (req, res, next) {
 	User.find().exec(function (err, list_users) {

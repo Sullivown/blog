@@ -8,8 +8,8 @@ const cors = require('cors');
 const passport = require('passport');
 
 require('dotenv').config();
-require('./auth/auth');
-require('./auth/tokenAuth');
+require('./auth/config/auth');
+require('./auth/config/tokenAuth');
 
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
