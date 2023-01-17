@@ -14,6 +14,8 @@ router.post('/', userController.user_create);
 
 router.put('/:id', userController.user_update);
 
+router.put('/:id/updatepassword', userController.user_update_password);
+
 router.delete('/:id', userController.user_delete);
 
 router.get('/:id', userController.user_detail);

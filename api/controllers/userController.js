@@ -148,7 +148,38 @@ module.exports.user_update = [
 	},
 ];
 
-module.exports.user_update_password = [];
+module.exports.user_update_password = [
+	body('password')
+		.trim()
+		.isLength({ min: 1 })
+		.withMessage('You must enter a password')
+		.escape(),
+	body('password_confirm')
+		.trim()
+		.custom((value, { req }) => value === req.body.password)
+		.withMessage('Passwords do not match')
+		.escape(),
+	(req, res, next) => {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			res.json({
+				message: 'User password update failed',
+				errors: errors.array(),
+			});
+			return;
+		}
+
+		User.findById(req.params.id, (err, user) => {
+			if (err) {
+				return next(err);
+			}
+			user.password = req.body.password;
+			user.save();
+			res.json({ message: 'User password updated successfully' });
+		});
+	},
+];
 
 module.exports.user_delete = function (req, res, next) {
 	User.findByIdAndDelete(req.params.id, function (err, user) {
