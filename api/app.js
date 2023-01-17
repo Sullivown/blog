@@ -33,10 +33,6 @@ passport.deserializeUser((id, done) => {
 	User.findById(id, (err, user) => done(err, user));
 });
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 app.use(passport.initialize());
 app.use(cors());
 app.use(logger('dev'));
