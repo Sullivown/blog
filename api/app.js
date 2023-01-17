@@ -14,8 +14,8 @@ require('./auth/tokenAuth');
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const postRouter = require('./routes/posts');
-const usersRouter = require('./routes/users');
 const commentRouter = require('./routes/comments');
+const usersRouter = require('./routes/users');
 
 const app = express();
 

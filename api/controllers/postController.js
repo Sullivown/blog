@@ -1,8 +1,6 @@
 const { body, validationResult } = require('express-validator');
-const async = require('async');
 
 const Post = require('../models/Post');
-const Comment = require('../models/Comment');
 
 exports.post_list = function (req, res, next) {
 	Post.find()
