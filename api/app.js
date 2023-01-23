@@ -11,6 +11,8 @@ require('dotenv').config();
 require('./auth/config/auth');
 require('./auth/config/tokenAuth');
 
+const getResourceType = require('./middleware/getResourceType');
+
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const postRouter = require('./routes/posts');
@@ -40,6 +42,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(getResourceType);
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);

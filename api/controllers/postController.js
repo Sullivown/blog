@@ -28,7 +28,6 @@ exports.post_detail = function (req, res, next) {
 					message: 'Post not found',
 				});
 			} else {
-				console.log(post);
 				res.json({
 					message: 'Request successful',
 					post,
@@ -66,7 +65,7 @@ exports.post_create_post = [
 			title: req.body.title,
 			content: req.body.content,
 			status: req.body.status,
-			user: req.user._id,
+			user: req.user.id,
 		});
 
 		if (!errors.isEmpty()) {
@@ -114,7 +113,7 @@ exports.post_update = [
 			content: req.body.content,
 			status: req.body.status,
 			comments: req.body.comments,
-			user: req.user._id,
+			user: req.user.id,
 		});
 
 		if (!errors.isEmpty()) {
@@ -126,11 +125,11 @@ exports.post_update = [
 			return;
 		}
 
-		Post.findByIdAndUpdate(req.params.id, post, (err, updatedPost) => {
+		Post.findByIdAndUpdate(req.params.id, post, (err, originalPostData) => {
 			if (err) {
 				return next(err);
 			}
-			res.json({ message: 'Post updated successfully', updatedPost });
+			res.json({ message: 'Post updated successfully', post });
 		});
 	},
 ];

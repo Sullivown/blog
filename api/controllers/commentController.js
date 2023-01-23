@@ -40,7 +40,7 @@ module.exports.comment_create = [
 		const comment = new Comment({
 			post: req.params.postId,
 			content: req.body.content,
-			user: req.user._id,
+			user: req.user.id,
 		});
 
 		if (!errors.isEmpty()) {
@@ -89,7 +89,7 @@ module.exports.comment_update = [
 			_id: req.params.id,
 			post: req.params.postId,
 			content: req.body.content,
-			user: req.user._id,
+			user: req.user.id,
 		});
 
 		if (!errors.isEmpty()) {
@@ -104,14 +104,14 @@ module.exports.comment_update = [
 		Comment.findByIdAndUpdate(
 			req.params.id,
 			comment,
-			(err, updatedComment) => {
+			(err, originalComment) => {
 				if (err) {
 					console.log(err);
 					return next(err);
 				}
 				res.json({
 					message: 'Comment updated successfully',
-					comment: updatedComment,
+					comment: comment,
 				});
 			}
 		);

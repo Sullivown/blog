@@ -137,7 +137,7 @@ module.exports.user_update = [
 			return;
 		}
 
-		User.findByIdAndUpdate(req.params.id, user, (err, updatedUser) => {
+		User.findByIdAndUpdate(req.params.id, user, (err, originalUserData) => {
 			if (err) {
 				return next(err);
 			}
