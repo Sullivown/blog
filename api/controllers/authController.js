@@ -1,6 +1,4 @@
 const passport = require('passport');
-const { body, validationResult } = require('express-validator');
-const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
 exports.auth_login_post = function (req, res, next) {

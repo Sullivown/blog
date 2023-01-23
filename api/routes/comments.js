@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const { isAuth } = require('../auth/authMiddleware');
+const { isAuth } = require('../middleware/authMiddleware');
 
 const commentController = require('../controllers/commentController');
 
