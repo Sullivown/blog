@@ -5,7 +5,12 @@ const Post = require('../models/Post');
 exports.post_list = function (req, res, next) {
 	Post.find()
 		.populate({ path: 'user', select: 'first_name last_name' })
-		.populate('comments')
+		.populate([
+			{
+				path: 'comments',
+				populate: [{ path: 'user', select: 'first_name last_name' }],
+			},
+		])
 		.sort([['creation_date', 'ascending']])
 		.exec(function (err, list_posts) {
 			if (err) {
@@ -18,7 +23,12 @@ exports.post_list = function (req, res, next) {
 exports.post_detail = function (req, res, next) {
 	Post.findById(req.params.id)
 		.populate({ path: 'user', select: 'first_name last_name' })
-		.populate('comments')
+		.populate([
+			{
+				path: 'comments',
+				populate: [{ path: 'user', select: 'first_name last_name' }],
+			},
+		])
 		.exec(function (err, post) {
 			if (err) {
 				return next(err);
