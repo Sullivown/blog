@@ -11,7 +11,7 @@ exports.post_list = function (req, res, next) {
 				populate: [{ path: 'user', select: 'first_name last_name' }],
 			},
 		])
-		.sort([['creation_date', 'ascending']])
+		.sort([['creation_date', 'descending']])
 		.exec(function (err, list_posts) {
 			if (err) {
 				return next(err);
