@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { useQuery } from '@tanstack/react-query';
+
+import WithLoading from '../wrappers/WithLoading';
 
 import PostDetail from '../components/PostDetail';
+
+const PostDetailWithLoading = WithLoading(PostDetail);
 
 const PostContainer = styled.div`
 	display: flex;
@@ -12,25 +17,31 @@ const PostContainer = styled.div`
 
 function Post() {
 	const { id } = useParams();
-	const [post, setPost] = useState(null);
 
-	useEffect(() => {
-		fetch(`${process.env.REACT_APP_API_BASE_URL}/posts/${id}`)
-			.then((result) => result.json())
-			.then((data) => {
-				setPost(data.post);
-			})
-			.catch((err) => console.log(err));
-	}, [id]);
+	const { isLoading, error, data, isFetching } = useQuery({
+		queryKey: ['posts', parseInt(id)],
+		queryFn: async () => {
+			const response = await fetch(
+				`${process.env.REACT_APP_API_BASE_URL}/posts/${id}`
+			);
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		},
+	});
+
+	if (error) return 'An error has occurred: ' + error.message;
 
 	return (
 		<PostContainer>
 			<h1>Post Detail</h1>
-			{post ? (
-				<PostDetail post={post} commentsEnabled={true} />
-			) : (
-				'Loading...'
-			)}
+			{isFetching && <div>Updating...</div>}
+			<PostDetailWithLoading
+				isLoading={isLoading}
+				post={data ? data.post : {}}
+				showComments={true}
+			/>
 		</PostContainer>
 	);
 }

@@ -17,7 +17,7 @@ function PostDetail(props) {
 				{props.post.user.first_name + ' ' + props.post.user.last_name}
 			</p>
 			<p>{props.post.creation_date}</p>
-			{props.commentsEnabled && (
+			{props.showComments && (
 				<CommentList comments={props.post.comments} />
 			)}
 		</StyledPostDetail>
