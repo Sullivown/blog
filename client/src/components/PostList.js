@@ -10,7 +10,11 @@ const StyledPostList = styled.div`
 
 function PostList(props) {
 	const postElements = props.posts.map((post) => (
-		<Post key={post._id} post={post} />
+		<Post
+			key={post._id}
+			post={post}
+			commentsEnabled={props.commentsEnabled}
+		/>
 	));
 
 	return <StyledPostList>{postElements}</StyledPostList>;

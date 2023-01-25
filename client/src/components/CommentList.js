@@ -5,7 +5,7 @@ import CommentDetail from './CommentDetail';
 
 const StyledCommentList = styled.div``;
 
-function PostDetail(props) {
+function CommentList(props) {
 	const commentElements = props.comments.map((comment) => (
 		<CommentDetail key={comment._id} comment={comment} />
 	));
@@ -17,4 +17,4 @@ function PostDetail(props) {
 	);
 }
 
-export default PostDetail;
+export default CommentList;

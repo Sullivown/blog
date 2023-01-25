@@ -24,7 +24,7 @@ function Home() {
 	return (
 		<HomeContainer>
 			<h1>Home</h1>
-			<PostList posts={posts} />
+			<PostList posts={posts} commentsEnabled={true} />
 		</HomeContainer>
 	);
 }
