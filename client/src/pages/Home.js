@@ -16,7 +16,6 @@ function Home() {
 		fetch(`${process.env.REACT_APP_API_BASE_URL}/posts`)
 			.then((result) => result.json())
 			.then((data) => {
-				console.log(data);
 				setPosts(data.post_list);
 			})
 			.catch((err) => console.log(err));

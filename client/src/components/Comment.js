@@ -4,7 +4,6 @@ import styled from 'styled-components';
 const StyledComment = styled.div``;
 
 function Post(props) {
-	console.log(props.comment);
 	return (
 		<StyledComment>
 			<p>{props.comment.content}</p>
