@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import Posts from '../components/Posts';
+import PostList from '../components/PostList';
 
 const HomeContainer = styled.div`
 	display: flex;
@@ -24,7 +24,7 @@ function Home() {
 	return (
 		<HomeContainer>
 			<h1>Home</h1>
-			<Posts posts={posts} />
+			<PostList posts={posts} />
 		</HomeContainer>
 	);
 }

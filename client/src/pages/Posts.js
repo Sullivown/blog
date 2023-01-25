@@ -7,7 +7,7 @@ const PostsContainer = styled.div`
 	align-items: center;
 `;
 
-function Home() {
+function Posts() {
 	return (
 		<PostsContainer>
 			<h1>Posts</h1>
@@ -15,4 +15,4 @@ function Home() {
 	);
 }
 
-export default Home;
+export default Posts;

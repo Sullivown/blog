@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Post from './Post';
+import Post from './PostDetail';
 
-const StyledPostsContainer = styled.div`
+const StyledPostList = styled.div`
 	display: flex;
 	flex-direction: column;
 `;
 
-function Posts(props) {
+function PostList(props) {
 	const postElements = props.posts.map((post) => (
 		<Post key={post._id} post={post} />
 	));
 
-	return <StyledPostsContainer>{postElements}</StyledPostsContainer>;
+	return <StyledPostList>{postElements}</StyledPostList>;
 }
 
-export default Posts;
+export default PostList;

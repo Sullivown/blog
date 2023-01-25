@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledComment = styled.div``;
+const StyledCommentDetail = styled.div``;
 
-function Post(props) {
+function CommentDetail(props) {
 	return (
-		<StyledComment>
+		<StyledCommentDetail>
 			<p>{props.comment.content}</p>
 			<p>
 				{props.comment.user.first_name +
@@ -13,8 +13,8 @@ function Post(props) {
 					props.comment.user.last_name}
 			</p>
 			<p>{props.comment.creation_date}</p>
-		</StyledComment>
+		</StyledCommentDetail>
 	);
 }
 
-export default Post;
+export default CommentDetail;
