@@ -12,7 +12,7 @@ router.post('/', isAuth, post_controller.post_create_post);
 
 router.get('/create', isAuth, post_controller.post_create_get);
 
-router.get('/:id', isAuth, isOwn, post_controller.post_detail);
+router.get('/:id', post_controller.post_detail);
 
 router.put('/:id', isAuth, isOwn, post_controller.post_update);
 

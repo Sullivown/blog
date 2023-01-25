@@ -58,7 +58,7 @@ app.use(function (req, res, next) {
 // error handler
 app.use(function (err, req, res, next) {
 	// only provide error in development
-	res.json({
+	res.status(400).json({
 		message: 'An error has occured',
 		error: req.app.get('env') === 'development' ? err : {},
 	});
