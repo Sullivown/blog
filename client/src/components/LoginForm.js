@@ -3,10 +3,18 @@ import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
+const StyledLoginFormContainer = styled.div``;
+
 const StyledLoginForm = styled.form``;
+
+const StyledErrorMessage = styled.div`
+	border: 1px solid red;
+	color: red;
+`;
 
 function LoginForm() {
 	const [formData, setFormData] = useState({ email: '', password: '' });
+	const [formErrors, setFormErrors] = useState([]);
 	const navigate = useNavigate();
 
 	const { mutate, isLoading } = useMutation({
@@ -24,11 +32,13 @@ function LoginForm() {
 				}
 			);
 			if (!response.ok) {
-				throw new Error('Network response was not ok');
+				throw new Error('Login unsuccessful');
 			}
 			return response.json();
 		},
-		onError: (error, variables) => {},
+		onError: (error, variables) => {
+			setFormErrors([error.message]);
+		},
 		onSuccess: (data, variables) => {
 			navigate('/');
 		},
@@ -43,23 +53,28 @@ function LoginForm() {
 	};
 
 	return (
-		<StyledLoginForm onSubmit={(event) => mutate(event)}>
-			<label>Email</label>
-			<input
-				type='email'
-				name='email'
-				value={formData.email}
-				onChange={handleChange}
-			></input>
-			<label>Password</label>
-			<input
-				type='password'
-				name='password'
-				value={formData.password}
-				onChange={handleChange}
-			></input>
-			<button type='submit'>Login</button>
-		</StyledLoginForm>
+		<StyledLoginFormContainer>
+			{formErrors.length > 0 && (
+				<StyledErrorMessage>{formErrors[0]}</StyledErrorMessage>
+			)}
+			<StyledLoginForm onSubmit={(event) => mutate(event)}>
+				<label>Email</label>
+				<input
+					type='email'
+					name='email'
+					value={formData.email}
+					onChange={handleChange}
+				></input>
+				<label>Password</label>
+				<input
+					type='password'
+					name='password'
+					value={formData.password}
+					onChange={handleChange}
+				></input>
+				<button type='submit'>Login</button>
+			</StyledLoginForm>
+		</StyledLoginFormContainer>
 	);
 }
 
