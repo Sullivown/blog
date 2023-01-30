@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const StyledLoginForm = styled.form``;
 
 function LoginForm() {
 	const [formData, setFormData] = useState({ email: '', password: '' });
+	const navigate = useNavigate();
 
 	const { mutate, isLoading } = useMutation({
 		mutationFn: async (event) => {
@@ -25,6 +27,10 @@ function LoginForm() {
 				throw new Error('Network response was not ok');
 			}
 			return response.json();
+		},
+		onError: (error, variables) => {},
+		onSuccess: (data, variables) => {
+			navigate('/');
 		},
 	});
 
