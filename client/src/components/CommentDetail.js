@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledCommentDetail = styled.div``;
+const StyledCommentDetail = styled.div`
+	border-top: 1px dashed grey;
+	padding: 15px;
+`;
 
 function CommentDetail(props) {
 	return (
