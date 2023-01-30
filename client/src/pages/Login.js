@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import LoginForm from '../components/LoginForm';
+
 const LoginContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -11,6 +13,7 @@ function Login() {
 	return (
 		<LoginContainer>
 			<h1>Login</h1>
+			<LoginForm />
 		</LoginContainer>
 	);
 }
