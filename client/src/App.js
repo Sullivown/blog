@@ -1,11 +1,16 @@
 import { Routes, Route } from 'react-router-dom';
 
+import useLocalStorage from './hooks/useLocalStorage';
+
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Post from './pages/Post';
 import Posts from './pages/Posts';
 
 function App() {
+	const [token, setToken] = useLocalStorage('token', '');
+	const [user, setUser] = useLocalStorage('user', '');
+
 	return (
 		<>
 			<Routes>

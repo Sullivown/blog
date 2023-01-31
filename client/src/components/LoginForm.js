@@ -14,7 +14,7 @@ function LoginForm() {
 	const [formErrors, setFormErrors] = useState([]);
 	const navigate = useNavigate();
 
-	const { mutate, isLoading } = useMutation({
+	const { mutate } = useMutation({
 		mutationFn: async (event) => {
 			event.preventDefault();
 			const response = await fetch(
