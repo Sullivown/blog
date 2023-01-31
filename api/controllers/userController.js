@@ -23,7 +23,9 @@ module.exports.user_detail = function (req, res, next) {
 				User.findById(req.params.id).exec(callback);
 			},
 			user_posts(callback) {
-				Post.find({ user: req.params.id }).exec(callback);
+				Post.find({ user: req.params.id })
+					.populate({ path: 'user', select: 'first_name last_name' })
+					.exec(callback);
 			},
 		},
 		(err, results) => {

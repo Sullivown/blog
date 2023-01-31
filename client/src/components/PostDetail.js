@@ -32,7 +32,7 @@ function PostDetail(props) {
 			{props.showComments && (
 				<CommentList comments={props.post.comments} />
 			)}
-			{true && <CommentForm />}
+			{props.showComments && <CommentForm />}
 		</StyledPostDetailContainer>
 	);
 }

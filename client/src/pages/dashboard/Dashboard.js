@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 const DashboardContainer = styled.div`
@@ -11,6 +12,7 @@ function Home() {
 	return (
 		<DashboardContainer>
 			<h1>Dashboard</h1>
+			<Outlet />
 		</DashboardContainer>
 	);
 }

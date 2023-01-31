@@ -53,13 +53,20 @@ function LoginForm(props) {
 		}));
 	};
 
+	const handleLogoutClick = () => {
+		props.setUser(null);
+	};
+
 	return (
 		<StyledLoginFormContainer>
 			{formErrors.length > 0 && (
 				<Messages messages={formErrors} messagesType='error' />
 			)}
 			{user ? (
-				'You are logged in!'
+				<>
+					<p>'You are logged in!'</p>
+					<button onClick={handleLogoutClick}>Log Out</button>
+				</>
 			) : (
 				<StyledLoginForm onSubmit={(event) => mutate(event)}>
 					<label>Email</label>
