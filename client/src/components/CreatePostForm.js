@@ -75,14 +75,16 @@ function CreatePostForm(props) {
 					value={formData.content}
 					onChange={handleChange}
 				></textarea>
-				<label htmlFor='status'>status</label>
-				<input
+				<label htmlFor='status'>Status</label>
+				<select
 					id='status'
-					type='text'
 					name='status'
 					value={formData.status}
 					onChange={handleChange}
-				></input>
+				>
+					<option value='Draft'>Draft</option>
+					<option value='Published'>Published</option>
+				</select>
 				<button type='submit'>Create Post</button>
 			</StyledCreatePostForm>
 		</StyledCreatePostFormContainer>
