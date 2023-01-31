@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+
+import UserContext from '../context/userContext';
 
 import Messages from './Messages';
 
@@ -9,9 +11,10 @@ const StyledLoginFormContainer = styled.div``;
 
 const StyledLoginForm = styled.form``;
 
-function LoginForm() {
+function LoginForm(props) {
 	const [formData, setFormData] = useState({ email: '', password: '' });
 	const [formErrors, setFormErrors] = useState([]);
+	const user = useContext(UserContext);
 	const navigate = useNavigate();
 
 	const { mutate } = useMutation({
@@ -37,6 +40,8 @@ function LoginForm() {
 			setFormErrors([error.message]);
 		},
 		onSuccess: (data, variables) => {
+			console.log(data);
+			props.setUser({ user: data.user, token: data.token });
 			navigate('/');
 		},
 	});
@@ -54,23 +59,27 @@ function LoginForm() {
 			{formErrors.length > 0 && (
 				<Messages messages={formErrors} messagesType='error' />
 			)}
-			<StyledLoginForm onSubmit={(event) => mutate(event)}>
-				<label>Email</label>
-				<input
-					type='email'
-					name='email'
-					value={formData.email}
-					onChange={handleChange}
-				></input>
-				<label>Password</label>
-				<input
-					type='password'
-					name='password'
-					value={formData.password}
-					onChange={handleChange}
-				></input>
-				<button type='submit'>Login</button>
-			</StyledLoginForm>
+			{user ? (
+				'You are logged in!'
+			) : (
+				<StyledLoginForm onSubmit={(event) => mutate(event)}>
+					<label>Email</label>
+					<input
+						type='email'
+						name='email'
+						value={formData.email}
+						onChange={handleChange}
+					></input>
+					<label>Password</label>
+					<input
+						type='password'
+						name='password'
+						value={formData.password}
+						onChange={handleChange}
+					></input>
+					<button type='submit'>Login</button>
+				</StyledLoginForm>
+			)}
 		</StyledLoginFormContainer>
 	);
 }

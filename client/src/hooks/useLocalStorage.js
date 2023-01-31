@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 function getSavedValue(key, initialValue) {
-	const savedValue = JSON.parse(localStorage.getItem(key) | false);
+	const savedValue = JSON.parse(localStorage.getItem(key));
 
 	if (savedValue) {
 		return savedValue;
@@ -21,9 +21,8 @@ function useLocalStorage(key, initialValue) {
 
 	useEffect(() => {
 		localStorage.setItem(key, JSON.stringify(storedValue));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [storedValue]);
-
-	console.log(storedValue);
 
 	return [storedValue, setStoredValue];
 }

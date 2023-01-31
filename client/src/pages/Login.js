@@ -9,11 +9,11 @@ const LoginContainer = styled.div`
 	align-items: center;
 `;
 
-function Login() {
+function Login(props) {
 	return (
 		<LoginContainer>
 			<h1>Login</h1>
-			<LoginForm />
+			<LoginForm setUser={props.setUser} />
 		</LoginContainer>
 	);
 }

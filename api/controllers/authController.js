@@ -26,7 +26,7 @@ exports.auth_login_post = function (req, res, next) {
 				process.env.SECRET_KEY,
 				{ expiresIn: '7d' }
 			);
-			return res.json({ message: 'Login successful', token });
+			return res.json({ message: 'Login successful', user: body, token });
 		});
 	})(req, res, next);
 };
