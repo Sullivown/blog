@@ -15,7 +15,7 @@ function Home() {
 	return (
 		<HomeContainer>
 			<h1>Home</h1>
-			<p>{user?.user.first_name}</p>
+			<p>{user?.first_name}</p>
 		</HomeContainer>
 	);
 }

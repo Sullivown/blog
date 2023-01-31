@@ -40,8 +40,7 @@ function LoginForm(props) {
 			setFormErrors([error.message]);
 		},
 		onSuccess: (data, variables) => {
-			console.log(data);
-			props.setUser({ user: data.user, token: data.token });
+			props.setUser({ ...data.user, token: data.token });
 			navigate('/');
 		},
 	});
