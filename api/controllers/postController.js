@@ -4,7 +4,7 @@ const { isObjectIdOrHexString } = require('mongoose');
 const Post = require('../models/Post');
 
 exports.post_list = function (req, res, next) {
-	Post.find()
+	Post.find({ status: 'Published' })
 		.populate({ path: 'user', select: 'first_name last_name' })
 		.populate([
 			{

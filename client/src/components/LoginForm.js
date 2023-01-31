@@ -69,15 +69,17 @@ function LoginForm(props) {
 				</>
 			) : (
 				<StyledLoginForm onSubmit={(event) => mutate(event)}>
-					<label>Email</label>
+					<label for='email'>Email</label>
 					<input
+						id='email'
 						type='email'
 						name='email'
 						value={formData.email}
 						onChange={handleChange}
 					></input>
-					<label>Password</label>
+					<label for='password'>Password</label>
 					<input
+						id='password'
 						type='password'
 						name='password'
 						value={formData.password}

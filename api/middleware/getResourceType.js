@@ -10,7 +10,6 @@ function getResourceType(req, res, next) {
 	} else {
 		req.resourceType = undefined;
 	}
-	console.log(req.resourceType);
 	next();
 }
 
