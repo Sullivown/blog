@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function getSavedValue(key, initialValue) {
-	const savedValue = JSON.parse(localStorage.getItem(key));
+	const savedValue = JSON.parse(localStorage.getItem(key) | false);
 
 	if (savedValue) {
 		return savedValue;
@@ -10,6 +10,8 @@ function getSavedValue(key, initialValue) {
 	if (initialValue instanceof Function) {
 		return initialValue();
 	}
+
+	return initialValue;
 }
 
 function useLocalStorage(key, initialValue) {
@@ -18,8 +20,10 @@ function useLocalStorage(key, initialValue) {
 	});
 
 	useEffect(() => {
-		localStorage.setItem('key', JSON.stringify(storedValue));
+		localStorage.setItem(key, JSON.stringify(storedValue));
 	}, [storedValue]);
+
+	console.log(storedValue);
 
 	return [storedValue, setStoredValue];
 }
