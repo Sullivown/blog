@@ -3,14 +3,11 @@ import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
+import Messages from './Messages';
+
 const StyledLoginFormContainer = styled.div``;
 
 const StyledLoginForm = styled.form``;
-
-const StyledErrorMessage = styled.div`
-	border: 1px solid red;
-	color: red;
-`;
 
 function LoginForm() {
 	const [formData, setFormData] = useState({ email: '', password: '' });
@@ -55,7 +52,7 @@ function LoginForm() {
 	return (
 		<StyledLoginFormContainer>
 			{formErrors.length > 0 && (
-				<StyledErrorMessage>{formErrors[0]}</StyledErrorMessage>
+				<Messages messages={formErrors} messagesType='error' />
 			)}
 			<StyledLoginForm onSubmit={(event) => mutate(event)}>
 				<label>Email</label>
