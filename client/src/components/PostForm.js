@@ -1,29 +1,36 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 
 import UserContext from '../context/userContext';
 
 import Messages from './Messages';
 
-const StyledCreatePostFormContainer = styled.div``;
+const StyledPostFormContainer = styled.div``;
 
-const StyledCreatePostForm = styled.form``;
+const StyledPostForm = styled.form``;
 
-function CreatePostForm(props) {
-	const [formData, setFormData] = useState({ title: '', content: '' });
-	const [formErrors, setFormErrors] = useState([]);
+function PostForm(props) {
+	const [formData, setFormData] = useState(
+		props.post || {
+			title: '',
+			content: '',
+			status: 'Draft',
+		}
+	);
+	const [messages, setMessages] = useState([]);
 	const user = useContext(UserContext);
-	const navigate = useNavigate();
 
 	const { mutate } = useMutation({
 		mutationFn: async (event) => {
 			event.preventDefault();
+			setMessages([]);
 			const response = await fetch(
-				`${process.env.REACT_APP_API_BASE_URL}/posts`,
+				`${process.env.REACT_APP_API_BASE_URL}/posts${
+					props.post && '/' + props.post._id
+				}`,
 				{
-					method: 'POST',
+					method: props.post ? 'PUT' : 'POST',
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
@@ -33,15 +40,20 @@ function CreatePostForm(props) {
 				}
 			);
 			if (!response.ok) {
-				throw new Error('Post creation unsuccessful');
+				throw new Error('Post creation/edit unsuccessful');
 			}
 			return response.json();
 		},
 		onError: (error, variables) => {
-			setFormErrors([error.message]);
+			setMessages([{ message: error.message, type: 'error' }]);
 		},
 		onSuccess: (data, variables) => {
-			console.log('Post created successfully ' + JSON.stringify(data));
+			setMessages([
+				{
+					message: 'Post created/edited successfully',
+					type: 'success',
+				},
+			]);
 		},
 	});
 
@@ -54,12 +66,10 @@ function CreatePostForm(props) {
 	};
 
 	return (
-		<StyledCreatePostFormContainer>
-			{formErrors.length > 0 && (
-				<Messages messages={formErrors} messagesType='error' />
-			)}
+		<StyledPostFormContainer>
+			{messages.length > 0 && <Messages messages={messages} />}
 
-			<StyledCreatePostForm onSubmit={(event) => mutate(event)}>
+			<StyledPostForm onSubmit={(event) => mutate(event)}>
 				<label htmlFor='title'>Title</label>
 				<input
 					id='title'
@@ -85,10 +95,10 @@ function CreatePostForm(props) {
 					<option value='Draft'>Draft</option>
 					<option value='Published'>Published</option>
 				</select>
-				<button type='submit'>Create Post</button>
-			</StyledCreatePostForm>
-		</StyledCreatePostFormContainer>
+				<button type='submit'>Save Post</button>
+			</StyledPostForm>
+		</StyledPostFormContainer>
 	);
 }
 
-export default CreatePostForm;
+export default PostForm;

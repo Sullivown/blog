@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Post from './PostDetail';
+import PostDetail from './PostDetail';
+import PostSummary from './PostSummary';
 
 const StyledPostList = styled.div`
 	display: flex;
@@ -9,9 +10,17 @@ const StyledPostList = styled.div`
 `;
 
 function PostList(props) {
-	const postElements = props.posts.map((post) => (
-		<Post key={post._id} post={post} showComments={props.showComments} />
-	));
+	const postElements = props.posts.map((post) =>
+		props.summary ? (
+			<PostSummary key={post._id} post={post} />
+		) : (
+			<PostDetail
+				key={post._id}
+				post={post}
+				showComments={props.showComments}
+			/>
+		)
+	);
 
 	return <StyledPostList>{postElements}</StyledPostList>;
 }

@@ -17,7 +17,7 @@ const StyledMessage = styled.div`
 
 function Messages(props) {
 	const messageElements = props.messages.map((message) => (
-		<StyledMessage type={props.messagesType}>{message}</StyledMessage>
+		<StyledMessage type={message.type}>{message.message}</StyledMessage>
 	));
 
 	return <StyledMessagesContainer>{messageElements}</StyledMessagesContainer>;

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-
 import { useQuery } from '@tanstack/react-query';
 
 import PostList from '../../components/PostList';
@@ -35,11 +34,12 @@ function Posts() {
 
 	return (
 		<PostsContainer>
-			<h1>Posts</h1>
+			<h1>My Posts</h1>
 			{isFetching && <div>Updating...</div>}
 			<PostListWithLoading
 				isLoading={isLoading}
 				posts={data ? data.user_posts : []}
+				summary={true}
 				showComments={false}
 			/>
 		</PostsContainer>

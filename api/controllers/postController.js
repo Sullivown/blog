@@ -128,6 +128,7 @@ exports.post_update = [
 		});
 
 		if (!errors.isEmpty()) {
+			console.log(errors);
 			res.json({
 				message: 'Post update failed',
 				post,

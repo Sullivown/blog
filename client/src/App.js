@@ -11,6 +11,7 @@ import Posts from './pages/Posts';
 import Dashboard from './pages/dashboard/Dashboard';
 import MyPosts from './pages/dashboard/MyPosts';
 import CreatePost from './pages/dashboard/CreatePost';
+import EditPost from './pages/dashboard/EditPost';
 
 function App() {
 	const [user, setUser] = useLocalStorage('user', null);
@@ -32,7 +33,7 @@ function App() {
 						<Route path='posts'>
 							<Route index element={<MyPosts />} />
 							<Route path='create' element={<CreatePost />} />
-							<Route path=':id' element={<Home />} />
+							<Route path=':id' element={<EditPost />} />
 						</Route>
 						<Route path='admin' element={<Home />}>
 							<Route path='users' element={<Home />} />

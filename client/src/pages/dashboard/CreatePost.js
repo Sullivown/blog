@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import CreatePostForm from '../../components/CreatePostForm';
+import PostForm from '../../components/PostForm';
 
 const CreatePostContainer = styled.div`
 	display: flex;
@@ -13,7 +13,7 @@ function CreatePost() {
 	return (
 		<CreatePostContainer>
 			<h1>Create Post</h1>
-			<CreatePostForm />
+			<PostForm />
 		</CreatePostContainer>
 	);
 }
