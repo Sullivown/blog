@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 import UserContext from '../context/userContext';
 
@@ -21,7 +22,7 @@ function PostForm(props) {
 	const [messages, setMessages] = useState([]);
 	const user = useContext(UserContext);
 
-	const { mutate } = useMutation({
+	const { mutate, isLoading } = useMutation({
 		mutationFn: async (event) => {
 			event.preventDefault();
 			setMessages([]);
@@ -40,7 +41,9 @@ function PostForm(props) {
 				}
 			);
 			if (!response.ok) {
-				throw new Error('Post creation/edit unsuccessful');
+				throw new Error(
+					`Post ${props.post ? 'edit' : 'creation'} unsuccessful`
+				);
 			}
 			return response.json();
 		},
@@ -50,8 +53,14 @@ function PostForm(props) {
 		onSuccess: (data, variables) => {
 			setMessages([
 				{
-					message: 'Post created/edited successfully',
+					message: `Post ${
+						props.post ? 'edited' : 'created'
+					} successfully!`,
 					type: 'success',
+					link: {
+						url: `/posts/${props.post._id}`,
+						text: 'View Post',
+					},
 				},
 			]);
 		},
@@ -95,7 +104,9 @@ function PostForm(props) {
 					<option value='Draft'>Draft</option>
 					<option value='Published'>Published</option>
 				</select>
-				<button type='submit'>Save Post</button>
+				<button type='submit' disabled={isLoading}>
+					Save Post
+				</button>
 			</StyledPostForm>
 		</StyledPostFormContainer>
 	);
