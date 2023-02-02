@@ -19,7 +19,10 @@ function PostSummary(props) {
 	return (
 		<StyledPostSummaryContainer>
 			<StyledPostSummary>
-				<Link to={`/dashboard/posts/${props.post._id}`}>
+				<Link
+					to={`/dashboard/posts/${props.post._id}`}
+					state={{ post: props.post }}
+				>
 					<h2>{props.post.title}</h2>
 				</Link>
 				<p>
@@ -28,6 +31,13 @@ function PostSummary(props) {
 						props.post.user.last_name}
 				</p>
 				<p>{props.post.creation_date}</p>
+				<Link
+					to={`/dashboard/posts/${props.post._id}`}
+					state={{ post: props.post }}
+				>
+					<button>Edit</button>
+				</Link>
+				<button>Delete</button>
 			</StyledPostSummary>
 		</StyledPostSummaryContainer>
 	);

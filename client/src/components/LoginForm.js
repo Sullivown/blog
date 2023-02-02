@@ -76,6 +76,7 @@ function LoginForm(props) {
 						name='email'
 						value={formData.email}
 						onChange={handleChange}
+						required
 					></input>
 					<label for='password'>Password</label>
 					<input
@@ -84,6 +85,7 @@ function LoginForm(props) {
 						name='password'
 						value={formData.password}
 						onChange={handleChange}
+						required
 					></input>
 					<button type='submit'>Login</button>
 				</StyledLoginForm>

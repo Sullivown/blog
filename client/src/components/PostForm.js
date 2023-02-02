@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { useMutation } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useLocation } from 'react-router-dom';
 
 import UserContext from '../context/userContext';
 
@@ -11,9 +11,12 @@ const StyledPostFormContainer = styled.div``;
 
 const StyledPostForm = styled.form``;
 
-function PostForm(props) {
+function PostForm() {
+	const location = useLocation();
+	const queryClient = useQueryClient();
+	const { post } = { ...location.state };
 	const [formData, setFormData] = useState(
-		props.post || {
+		post || {
 			title: '',
 			content: '',
 			status: 'Draft',
@@ -28,10 +31,10 @@ function PostForm(props) {
 			setMessages([]);
 			const response = await fetch(
 				`${process.env.REACT_APP_API_BASE_URL}/posts${
-					props.post && '/' + props.post._id
+					post ? '/' + post._id : ''
 				}`,
 				{
-					method: props.post ? 'PUT' : 'POST',
+					method: post ? 'PUT' : 'POST',
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
@@ -42,27 +45,29 @@ function PostForm(props) {
 			);
 			if (!response.ok) {
 				throw new Error(
-					`Post ${props.post ? 'edit' : 'creation'} unsuccessful`
+					`Post ${post ? 'edit' : 'creation'} unsuccessful`
 				);
 			}
 			return response.json();
 		},
-		onError: (error, variables) => {
+		onError: (error) => {
 			setMessages([{ message: error.message, type: 'error' }]);
 		},
-		onSuccess: (data, variables) => {
+		onSuccess: (data) => {
 			setMessages([
 				{
 					message: `Post ${
-						props.post ? 'edited' : 'created'
+						post ? 'edited' : 'created'
 					} successfully!`,
 					type: 'success',
 					link: {
-						url: `/posts/${props.post._id}`,
+						url: `/posts/${data.post._id}`,
 						text: 'View Post',
 					},
 				},
 			]);
+			queryClient.setQueryData(['posts', data._id], data);
+			queryClient.invalidateQueries(['posts'], { exact: true });
 		},
 	});
 

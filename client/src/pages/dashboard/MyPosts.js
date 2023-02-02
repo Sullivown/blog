@@ -18,13 +18,15 @@ function Posts() {
 	const user = useContext(UserContext);
 
 	const { isLoading, error, data, isFetching } = useQuery({
-		queryKey: ['my_posts', parseInt(user.id)],
+		queryKey: ['user', parseInt(user.id)],
 		queryFn: async () => {
 			const response = await fetch(
 				`${process.env.REACT_APP_API_BASE_URL}/users/${user.id}`
 			);
 			if (!response.ok) {
-				throw new Error('Network response was not ok');
+				throw new Error(
+					`Network response was not ok: ${response.status}`
+				);
 			}
 			return response.json();
 		},
