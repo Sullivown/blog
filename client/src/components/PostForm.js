@@ -54,6 +54,7 @@ function PostForm() {
 			setMessages([{ message: error.message, type: 'error' }]);
 		},
 		onSuccess: (data) => {
+			console.log(data);
 			setMessages([
 				{
 					message: `Post ${
@@ -66,7 +67,7 @@ function PostForm() {
 					},
 				},
 			]);
-			queryClient.setQueryData(['posts', data._id], data);
+			queryClient.setQueryData(['posts', data.post._id], data.post);
 			queryClient.invalidateQueries(['posts'], { exact: true });
 		},
 	});

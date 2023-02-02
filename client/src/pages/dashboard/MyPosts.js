@@ -18,7 +18,7 @@ function Posts() {
 	const user = useContext(UserContext);
 
 	const { isLoading, error, data, isFetching } = useQuery({
-		queryKey: ['user', parseInt(user.id)],
+		queryKey: ['user', user.id],
 		queryFn: async () => {
 			const response = await fetch(
 				`${process.env.REACT_APP_API_BASE_URL}/users/${user.id}`

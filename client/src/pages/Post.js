@@ -19,7 +19,7 @@ function Post() {
 	const { id } = useParams();
 
 	const { isLoading, error, data, isFetching } = useQuery({
-		queryKey: ['posts', parseInt(id)],
+		queryKey: ['posts', id],
 		queryFn: async () => {
 			const response = await fetch(
 				`${process.env.REACT_APP_API_BASE_URL}/posts/${id}`
