@@ -22,11 +22,15 @@ function PostDetail(props) {
 					<h2>{props.post.title}</h2>
 				</Link>
 				<p>{props.post.content}</p>
-				<p>
-					{props.post.user.first_name +
-						' ' +
-						props.post.user.last_name}
-				</p>
+				<Link to={`/users/${props.post.user._id}`}>
+					<p>
+						{' '}
+						{props.post.user.first_name +
+							' ' +
+							props.post.user.last_name}
+					</p>
+				</Link>
+
 				<p>{props.post.creation_date}</p>
 			</StyledPostDetail>
 			{props.showComments && (

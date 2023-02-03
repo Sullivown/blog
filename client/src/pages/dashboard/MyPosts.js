@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import PostList from '../../components/PostList';
 import WithLoading from '../../wrappers/WithLoading';
 import UserContext from '../../context/userContext';
+import { getUser } from '../../api/user';
 
 const PostsContainer = styled.div`
 	display: flex;
@@ -19,17 +20,7 @@ function Posts() {
 
 	const { isLoading, error, data, isFetching } = useQuery({
 		queryKey: ['user', user.id],
-		queryFn: async () => {
-			const response = await fetch(
-				`${process.env.REACT_APP_API_BASE_URL}/users/${user.id}`
-			);
-			if (!response.ok) {
-				throw new Error(
-					`Network response was not ok: ${response.status}`
-				);
-			}
-			return response.json();
-		},
+		queryFn: () => getUser(user.id),
 	});
 
 	if (error) return 'An error has occurred: ' + error.message;

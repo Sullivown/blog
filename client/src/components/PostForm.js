@@ -6,6 +6,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import UserContext from '../context/userContext';
 
 import Messages from './Messages';
+import { getPost, postPost, putPost } from '../api/post';
 
 const StyledPostFormContainer = styled.div``;
 
@@ -15,57 +16,53 @@ function PostForm() {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const location = useLocation();
-	console.log(location);
 	const [formData, setFormData] = useState({
 		title: '',
 		content: '',
 		status: 'Draft',
 	});
 	const [messages, setMessages] = useState(location.state?.messages || []);
-	console.log(messages);
 	const user = useContext(UserContext);
 
 	const { error } = useQuery({
 		queryKey: ['posts', id],
 		enabled: id ? true : false,
-		queryFn: async () => {
-			const response = await fetch(
-				`${process.env.REACT_APP_API_BASE_URL}/posts/${id}`
-			);
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			return response.json();
-		},
+		queryFn: () => getPost(id),
 		onSuccess: (data) => {
 			setFormData(data.post);
 		},
 	});
 
 	const { mutate, isLoading: isLoadingMutate } = useMutation({
-		mutationFn: async (event) => {
+		mutationFn: (event) => {
 			event.preventDefault();
 			setMessages([]);
-			const response = await fetch(
-				`${process.env.REACT_APP_API_BASE_URL}/posts${
-					id ? '/' + id : ''
-				}`,
-				{
-					method: id ? 'PUT' : 'POST',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${user.token}`,
-					},
-					body: JSON.stringify(formData),
-				}
-			);
-			if (!response.ok) {
-				throw new Error(
-					`Post ${id ? 'edit' : 'creation'} unsuccessful`
-				);
+			if (!id) {
+				return postPost(formData, user);
+			} else {
+				return putPost(id, formData, user);
 			}
-			return response.json();
+
+			// const response = await fetch(
+			// 	`${process.env.REACT_APP_API_BASE_URL}/posts${
+			// 		id ? '/' + id : ''
+			// 	}`,
+			// 	{
+			// 		method: id ? 'PUT' : 'POST',
+			// 		headers: {
+			// 			Accept: 'application/json',
+			// 			'Content-Type': 'application/json',
+			// 			Authorization: `Bearer ${user.token}`,
+			// 		},
+			// 		body: JSON.stringify(formData),
+			// 	}
+			// );
+			// if (!response.ok) {
+			// 	throw new Error(
+			// 		`Post ${id ? 'edit' : 'creation'} unsuccessful`
+			// 	);
+			// }
+			// return response.json();
 		},
 		onError: (error) => {
 			setMessages([{ message: error.message, type: 'error' }]);

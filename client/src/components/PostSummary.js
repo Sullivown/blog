@@ -31,6 +31,7 @@ function PostSummary(props) {
 						props.post.user.last_name}
 				</p>
 				<p>{props.post.creation_date}</p>
+				<p>{props.post.status}</p>
 				<Link
 					to={`/dashboard/posts/${props.post._id}`}
 					state={{ post: props.post }}

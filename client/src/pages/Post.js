@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import WithLoading from '../wrappers/WithLoading';
 
 import PostDetail from '../components/PostDetail';
+import { getPost } from '../api/post';
 
 const PostDetailWithLoading = WithLoading(PostDetail);
 
@@ -20,15 +21,7 @@ function Post() {
 
 	const { isLoading, error, data, isFetching } = useQuery({
 		queryKey: ['posts', id],
-		queryFn: async () => {
-			const response = await fetch(
-				`${process.env.REACT_APP_API_BASE_URL}/posts/${id}`
-			);
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			return response.json();
-		},
+		queryFn: () => getPost(id),
 	});
 
 	if (error) return 'An error has occurred: ' + error.message;
