@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import UserContext from '../context/userContext';
 
@@ -13,17 +13,19 @@ const StyledPostForm = styled.form``;
 
 function PostForm() {
 	const { id } = useParams();
-	console.log(id);
-	const queryClient = useQueryClient();
+	const navigate = useNavigate();
+	const location = useLocation();
+	console.log(location);
 	const [formData, setFormData] = useState({
 		title: '',
 		content: '',
 		status: 'Draft',
 	});
-	const [messages, setMessages] = useState([]);
+	const [messages, setMessages] = useState(location.state?.messages || []);
+	console.log(messages);
 	const user = useContext(UserContext);
 
-	const { error, data } = useQuery({
+	const { error } = useQuery({
 		queryKey: ['posts', id],
 		enabled: id ? true : false,
 		queryFn: async () => {
@@ -46,7 +48,7 @@ function PostForm() {
 			setMessages([]);
 			const response = await fetch(
 				`${process.env.REACT_APP_API_BASE_URL}/posts${
-					data.post ? '/' + data.post._id : ''
+					id ? '/' + id : ''
 				}`,
 				{
 					method: id ? 'PUT' : 'POST',
@@ -69,22 +71,39 @@ function PostForm() {
 			setMessages([{ message: error.message, type: 'error' }]);
 		},
 		onSuccess: (mutateData) => {
-			console.log(data);
-			setMessages([
-				{
-					message: `Post ${id ? 'edited' : 'created'} successfully!`,
-					type: 'success',
-					link: {
-						url: `/posts/${mutateData.post._id}`,
-						text: 'View Post',
+			if (!id) {
+				navigate(`/dashboard/posts/${mutateData.post._id}`, {
+					state: {
+						messages: [
+							{
+								message: 'Post created successfully!',
+								type: 'success',
+								link:
+									mutateData.post.status === 'Published'
+										? {
+												url: `/posts/${mutateData.post._id}`,
+												text: 'View Post',
+										  }
+										: null,
+							},
+						],
 					},
-				},
-			]);
-			queryClient.setQueryData(
-				['posts', mutateData.post._id],
-				mutateData.post
-			);
-			queryClient.invalidateQueries(['posts'], { exact: true });
+				});
+			} else {
+				setMessages([
+					{
+						message: 'Post edited successfully!',
+						type: 'success',
+						link:
+							mutateData.post.status === 'Published'
+								? {
+										url: `/posts/${mutateData.post._id}`,
+										text: 'View Post',
+								  }
+								: null,
+					},
+				]);
+			}
 		},
 	});
 
