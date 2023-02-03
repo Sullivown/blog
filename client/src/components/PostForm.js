@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useLocation } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 import UserContext from '../context/userContext';
 
@@ -12,29 +12,44 @@ const StyledPostFormContainer = styled.div``;
 const StyledPostForm = styled.form``;
 
 function PostForm() {
-	const location = useLocation();
+	const { id } = useParams();
+	console.log(id);
 	const queryClient = useQueryClient();
-	const { post } = { ...location.state };
-	const [formData, setFormData] = useState(
-		post || {
-			title: '',
-			content: '',
-			status: 'Draft',
-		}
-	);
+	const [formData, setFormData] = useState({
+		title: '',
+		content: '',
+		status: 'Draft',
+	});
 	const [messages, setMessages] = useState([]);
 	const user = useContext(UserContext);
 
-	const { mutate, isLoading } = useMutation({
+	const { error, data } = useQuery({
+		queryKey: ['posts', id],
+		enabled: id ? true : false,
+		queryFn: async () => {
+			const response = await fetch(
+				`${process.env.REACT_APP_API_BASE_URL}/posts/${id}`
+			);
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		},
+		onSuccess: (data) => {
+			setFormData(data.post);
+		},
+	});
+
+	const { mutate, isLoading: isLoadingMutate } = useMutation({
 		mutationFn: async (event) => {
 			event.preventDefault();
 			setMessages([]);
 			const response = await fetch(
 				`${process.env.REACT_APP_API_BASE_URL}/posts${
-					post ? '/' + post._id : ''
+					data.post ? '/' + data.post._id : ''
 				}`,
 				{
-					method: post ? 'PUT' : 'POST',
+					method: id ? 'PUT' : 'POST',
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
@@ -45,7 +60,7 @@ function PostForm() {
 			);
 			if (!response.ok) {
 				throw new Error(
-					`Post ${post ? 'edit' : 'creation'} unsuccessful`
+					`Post ${id ? 'edit' : 'creation'} unsuccessful`
 				);
 			}
 			return response.json();
@@ -53,21 +68,22 @@ function PostForm() {
 		onError: (error) => {
 			setMessages([{ message: error.message, type: 'error' }]);
 		},
-		onSuccess: (data) => {
+		onSuccess: (mutateData) => {
 			console.log(data);
 			setMessages([
 				{
-					message: `Post ${
-						post ? 'edited' : 'created'
-					} successfully!`,
+					message: `Post ${id ? 'edited' : 'created'} successfully!`,
 					type: 'success',
 					link: {
-						url: `/posts/${data.post._id}`,
+						url: `/posts/${mutateData.post._id}`,
 						text: 'View Post',
 					},
 				},
 			]);
-			queryClient.setQueryData(['posts', data.post._id], data.post);
+			queryClient.setQueryData(
+				['posts', mutateData.post._id],
+				mutateData.post
+			);
 			queryClient.invalidateQueries(['posts'], { exact: true });
 		},
 	});
@@ -80,6 +96,8 @@ function PostForm() {
 		}));
 	};
 
+	if (error) return 'An error has occurred: ' + error.message;
+
 	return (
 		<StyledPostFormContainer>
 			{messages.length > 0 && <Messages messages={messages} />}
@@ -90,6 +108,7 @@ function PostForm() {
 					id='title'
 					type='text'
 					name='title'
+					placeholder='Post Title'
 					value={formData.title}
 					onChange={handleChange}
 				></input>
@@ -97,6 +116,7 @@ function PostForm() {
 				<textarea
 					id='content'
 					name='content'
+					placeholder='Post Content'
 					value={formData.content}
 					onChange={handleChange}
 				></textarea>
@@ -110,7 +130,7 @@ function PostForm() {
 					<option value='Draft'>Draft</option>
 					<option value='Published'>Published</option>
 				</select>
-				<button type='submit' disabled={isLoading}>
+				<button type='submit' disabled={isLoadingMutate}>
 					Save Post
 				</button>
 			</StyledPostForm>
