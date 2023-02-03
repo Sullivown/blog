@@ -23,7 +23,7 @@ function User() {
 	const { id } = useParams();
 
 	const { isLoading, error, data, isFetching } = useQuery({
-		queryKey: ['user', id],
+		queryKey: ['users', id],
 		queryFn: () => getUser(id),
 	});
 

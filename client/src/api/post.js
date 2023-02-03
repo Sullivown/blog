@@ -53,3 +53,21 @@ export async function putPost(postId, formData, user) {
 	}
 	return response.json();
 }
+
+export async function deletePost(postId, user) {
+	const response = await fetch(
+		`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
+		{
+			method: 'DELETE',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${user.token}`,
+			},
+		}
+	);
+	if (!response.ok) {
+		throw new Error(`Post delete unsuccessful`);
+	}
+	return response.json();
+}

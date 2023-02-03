@@ -19,7 +19,7 @@ function Posts() {
 	const user = useContext(UserContext);
 
 	const { isLoading, error, data, isFetching } = useQuery({
-		queryKey: ['user', user.id],
+		queryKey: ['users', user.id],
 		queryFn: () => getUser(user.id),
 	});
 

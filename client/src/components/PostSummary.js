@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deletePost } from '../api/post';
+import UserContext from '../context/userContext';
 
 const StyledPostSummaryContainer = styled.div`
 	border: 1px solid black;
@@ -16,6 +19,19 @@ const StyledPostSummary = styled.div`
 `;
 
 function PostSummary(props) {
+	const user = useContext(UserContext);
+	const queryClient = useQueryClient();
+	const { mutate, isLoading: isLoadingMutate } = useMutation({
+		mutationFn: (event) => {
+			event.preventDefault();
+			return deletePost(props.post._id, user);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['users'] });
+			queryClient.invalidateQueries({ queryKey: ['posts'] });
+		},
+	});
+
 	return (
 		<StyledPostSummaryContainer>
 			<StyledPostSummary>
@@ -36,9 +52,11 @@ function PostSummary(props) {
 					to={`/dashboard/posts/${props.post._id}`}
 					state={{ post: props.post }}
 				>
-					<button>Edit</button>
+					<button disabled={isLoadingMutate}>Edit</button>
 				</Link>
-				<button>Delete</button>
+				<button onClick={mutate} disabled={isLoadingMutate}>
+					Delete
+				</button>
 			</StyledPostSummary>
 		</StyledPostSummaryContainer>
 	);

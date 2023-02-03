@@ -42,27 +42,6 @@ function PostForm() {
 			} else {
 				return putPost(id, formData, user);
 			}
-
-			// const response = await fetch(
-			// 	`${process.env.REACT_APP_API_BASE_URL}/posts${
-			// 		id ? '/' + id : ''
-			// 	}`,
-			// 	{
-			// 		method: id ? 'PUT' : 'POST',
-			// 		headers: {
-			// 			Accept: 'application/json',
-			// 			'Content-Type': 'application/json',
-			// 			Authorization: `Bearer ${user.token}`,
-			// 		},
-			// 		body: JSON.stringify(formData),
-			// 	}
-			// );
-			// if (!response.ok) {
-			// 	throw new Error(
-			// 		`Post ${id ? 'edit' : 'creation'} unsuccessful`
-			// 	);
-			// }
-			// return response.json();
 		},
 		onError: (error) => {
 			setMessages([{ message: error.message, type: 'error' }]);
