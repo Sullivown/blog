@@ -19,6 +19,7 @@ exports.auth_login_post = function (req, res, next) {
 				id: user._id,
 				first_name: user.first_name,
 				last_name: user.last_name,
+				admin: user.admin,
 			};
 
 			const token = jwt.sign(

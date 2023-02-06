@@ -18,6 +18,8 @@ const StyledPostSummary = styled.div`
 	padding: 5px;
 `;
 
+const StyledControlsDiv = styled.div``;
+
 function PostSummary(props) {
 	const user = useContext(UserContext);
 	const queryClient = useQueryClient();
@@ -50,16 +52,19 @@ function PostSummary(props) {
 				</p>
 				<p>{props.post.creation_date}</p>
 				<p>{props.post.status}</p>
-				<Link
-					to={`/dashboard/posts/${props.post._id}`}
-					state={{ post: props.post }}
-				>
-					<button disabled={isLoadingMutate}>Edit</button>
-				</Link>
-				{(props.post.user._id === user.id || user.admin) && (
-					<button onClick={mutate} disabled={isLoadingMutate}>
-						Delete
-					</button>
+
+				{(props.post.user._id === 'user.id ' || user.admin) && (
+					<StyledControlsDiv>
+						<Link
+							to={`/dashboard/posts/${props.post._id}`}
+							state={{ post: props.post }}
+						>
+							<button disabled={isLoadingMutate}>Edit</button>
+						</Link>
+						<button onClick={mutate} disabled={isLoadingMutate}>
+							Delete
+						</button>
+					</StyledControlsDiv>
 				)}
 			</StyledPostSummary>
 		</StyledPostSummaryContainer>
