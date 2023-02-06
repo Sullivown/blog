@@ -4,7 +4,7 @@ const { isAuth, isOwn, isAdmin } = require('../middleware/authMiddleware');
 
 const userController = require('../controllers/userController');
 
-router.get('/', isAuth, isAdmin, userController.user_list);
+router.get('/', userController.user_list);
 
 router.post('/', userController.user_create);
 

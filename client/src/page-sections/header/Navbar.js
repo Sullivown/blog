@@ -52,7 +52,7 @@ function Navbar() {
 							<StyledLink to='posts'>Posts</StyledLink>
 						</StyledLi>
 						<StyledLi>
-							<StyledLink to='/'>Users</StyledLink>
+							<StyledLink to='users'>Users</StyledLink>
 						</StyledLi>
 						{user && (
 							<StyledLi>

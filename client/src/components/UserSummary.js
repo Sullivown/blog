@@ -2,15 +2,15 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deletePost } from '../api/post';
+import { deleteUser } from '../api/user';
 import UserContext from '../context/userContext';
 
-const StyledPostSummaryContainer = styled.div`
+const StyledUserSummaryContainer = styled.div`
 	border: 1px solid black;
 	margin-top: 5px;
 `;
 
-const StyledPostSummary = styled.div`
+const StyledUserSummary = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -20,36 +20,36 @@ const StyledPostSummary = styled.div`
 
 const StyledControlsDiv = styled.div``;
 
-function PostSummary(props) {
+function UserSummary(props) {
 	const user = useContext(UserContext);
 	const queryClient = useQueryClient();
 	const { mutate, isLoading: isLoadingMutate } = useMutation({
 		mutationFn: (event) => {
 			event.preventDefault();
-			return deletePost(props.post._id, user);
+			return deleteUser(props.user._id, user);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['users'] });
-			queryClient.invalidateQueries({ queryKey: ['posts'] });
+			queryClient.invalidateQueries({ queryKey: ['users'] });
 		},
 	});
 
 	return (
-		<StyledPostSummaryContainer>
-			<StyledPostSummary>
-				<Link to={`/dashboard/posts/${props.post._id}`}>
-					<h2>{props.post.title}</h2>
+		<StyledUserSummaryContainer>
+			<StyledUserSummary>
+				<Link to={`/dashboard/users/${props.user._id}`}>
+					<h2>{props.user.title}</h2>
 				</Link>
 				<p>
-					{props.post.user.first_name +
+					{props.user.user.first_name +
 						' ' +
-						props.post.user.last_name}
+						props.user.user.last_name}
 				</p>
-				<p>{props.post.creation_date}</p>
-				<p>{props.post.status}</p>
-				{(props.post.user._id === user.id || user.admin) && (
+				<p>{props.user.creation_date}</p>
+				<p>{props.user.status}</p>
+				{(props.user.user._id === user.id || user.admin) && (
 					<StyledControlsDiv>
-						<Link to={`/dashboard/posts/${props.post._id}`}>
+						<Link to={`/dashboard/users/${props.user._id}`}>
 							<button disabled={isLoadingMutate}>Edit</button>
 						</Link>
 						<button onClick={mutate} disabled={isLoadingMutate}>
@@ -57,9 +57,9 @@ function PostSummary(props) {
 						</button>
 					</StyledControlsDiv>
 				)}
-			</StyledPostSummary>
-		</StyledPostSummaryContainer>
+			</StyledUserSummary>
+		</StyledUserSummaryContainer>
 	);
 }
 
-export default PostSummary;
+export default UserSummary;
