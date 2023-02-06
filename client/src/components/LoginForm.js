@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import Messages from './Messages';
+import { postLogin } from '../api/auth';
 
 const StyledLoginFormContainer = styled.div``;
 
@@ -15,28 +16,14 @@ function LoginForm(props) {
 	const navigate = useNavigate();
 
 	const { mutate } = useMutation({
-		mutationFn: async (event) => {
+		mutationFn: (event) => {
 			event.preventDefault();
-			const response = await fetch(
-				`${process.env.REACT_APP_API_BASE_URL}/auth/login`,
-				{
-					method: 'POST',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(formData),
-				}
-			);
-			if (!response.ok) {
-				throw new Error('Login unsuccessful');
-			}
-			return response.json();
+			return postLogin(formData);
 		},
-		onError: (error, variables) => {
+		onError: (error) => {
 			setFormErrors([error.message]);
 		},
-		onSuccess: (data, variables) => {
+		onSuccess: (data) => {
 			props.setUser({ ...data.user, token: data.token });
 			navigate('/');
 		},

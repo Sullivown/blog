@@ -24,7 +24,10 @@ module.exports.user_detail = function (req, res, next) {
 			},
 			user_posts(callback) {
 				Post.find({ user: req.params.id })
-					.populate({ path: 'user', select: 'first_name last_name' })
+					.populate({
+						path: 'user',
+						select: 'first_name last_name email',
+					})
 					.sort([['creation_date', 'descending']])
 					.exec(callback);
 			},

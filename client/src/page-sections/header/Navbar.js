@@ -67,7 +67,13 @@ function Navbar(props) {
 								</StyledLink>
 							</StyledLi>
 						)}
-
+						{user?.admin && (
+							<StyledLi>
+								<StyledLink to='dashboard/admin'>
+									Admin Panel
+								</StyledLink>
+							</StyledLi>
+						)}
 						<StyledLi>
 							{user ? (
 								<StyledLink onClick={handleLogoutClick}>

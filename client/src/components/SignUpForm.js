@@ -6,38 +6,45 @@ import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/userContext';
 
 import Messages from './Messages';
+import { postUser, putUser } from '../api/user';
 
 const StyledSignUpFormContainer = styled.div``;
 
-const StyledSignUpForm = styled.form``;
+const StyledSignUpForm = styled.form`
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+`;
 
 function SignUpForm(props) {
-	const [formData, setFormData] = useState({ email: '', password: '' });
-	const [formErrors, setFormErrors] = useState([]);
 	const user = useContext(UserContext);
+	const [messages, setMessages] = useState([]);
+	const [formData, setFormData] = useState(
+		user
+			? { ...user, password: '', password_confirm: '' }
+			: {
+					first_name: '',
+					last_name: '',
+					email: '',
+					password: '',
+					password_confirm: '',
+			  }
+	);
+
 	const navigate = useNavigate();
 
 	const { mutate } = useMutation({
 		mutationFn: async (event) => {
 			event.preventDefault();
-			const response = await fetch(
-				`${process.env.REACT_APP_API_BASE_URL}/auth/login`,
-				{
-					method: 'POST',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(formData),
-				}
-			);
-			if (!response.ok) {
-				throw new Error('Sign up unsuccessful');
+			setMessages([]);
+			if (!user) {
+				return postUser(formData, user);
+			} else {
+				return putUser(user._id, formData, user);
 			}
-			return response.json();
 		},
 		onError: (error) => {
-			setFormErrors([error.message]);
+			setMessages([error.message]);
 		},
 		onSuccess: (data) => {
 			props.setUser({ ...data.user, token: data.token });
@@ -53,72 +60,63 @@ function SignUpForm(props) {
 		}));
 	};
 
-	const handleLogoutClick = () => {
-		props.setUser(null);
-	};
-
 	return (
 		<StyledSignUpFormContainer>
-			{formErrors.length > 0 && (
-				<Messages messages={formErrors} messagesType='error' />
+			{messages.length > 0 && (
+				<Messages messages={messages} messagesType='error' />
 			)}
-			{user ? (
-				<>
-					<p>'You are logged in!'</p>
-					<button onClick={handleLogoutClick}>Log Out</button>
-				</>
-			) : (
-				<StyledSignUpForm onSubmit={(event) => mutate(event)}>
-					<label htmlFor='first_name'>First Name</label>
-					<input
-						id='first_name'
-						type='text'
-						name='first_name'
-						value={formData.first_name}
-						onChange={handleChange}
-						required
-					></input>
-					<label htmlFor='last_name'>Last Name</label>
-					<input
-						id='last_name'
-						type='last_name'
-						name='last_name'
-						value={formData.last_name}
-						onChange={handleChange}
-						required
-					></input>
-					<label htmlFor='email'>Email</label>
-					<input
-						id='email'
-						type='email'
-						name='email'
-						value={formData.email}
-						onChange={handleChange}
-						required
-					></input>
-					<label htmlFor='password'>Password</label>
-					<input
-						id='password'
-						type='password'
-						name='password'
-						autoComplete='off'
-						value={formData.password}
-						onChange={handleChange}
-						required
-					></input>
-					<label htmlFor='password_confirm'>Confirm Password</label>
-					<input
-						id='password_confirm'
-						type='password'
-						name='password_confirm'
-						autoComplete='off'
-						value={formData.password_confirm}
-						onChange={handleChange}
-						required
-					></input>
-					<button type='submit'>Create Account</button>
-				</StyledSignUpForm>
-			)}
+			<StyledSignUpForm onSubmit={(event) => mutate(event)}>
+				<label htmlFor='first_name'>First Name</label>
+				<input
+					id='first_name'
+					type='text'
+					name='first_name'
+					value={formData.first_name}
+					onChange={handleChange}
+					required
+				></input>
+				<label htmlFor='last_name'>Last Name</label>
+				<input
+					id='last_name'
+					type='last_name'
+					name='last_name'
+					value={formData.last_name}
+					onChange={handleChange}
+					required
+				></input>
+				<label htmlFor='email'>Email</label>
+				<input
+					id='email'
+					type='email'
+					name='email'
+					value={formData.email}
+					onChange={handleChange}
+					required
+				></input>
+				<label htmlFor='password'>Password</label>
+				<input
+					id='password'
+					type='password'
+					name='password'
+					autoComplete='off'
+					value={formData.password}
+					onChange={handleChange}
+					required
+				></input>
+				<label htmlFor='password_confirm'>Confirm Password</label>
+				<input
+					id='password_confirm'
+					type='password'
+					name='password_confirm'
+					autoComplete='off'
+					value={formData.password_confirm}
+					onChange={handleChange}
+					required
+				></input>
+				<button type='submit'>
+					{user ? 'Update Details' : 'Create Account'}
+				</button>
+			</StyledSignUpForm>
 		</StyledSignUpFormContainer>
 	);
 }
