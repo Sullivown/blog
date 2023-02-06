@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import useLocalStorage from './hooks/useLocalStorage';
 import UserContext from './context/userContext';
+import GlobalStyle from './style/GlobalStyle';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -21,6 +22,7 @@ function App() {
 	return (
 		<>
 			<UserContext.Provider value={user}>
+				<GlobalStyle />
 				<Header />
 				<Routes>
 					<Route path='/' element={<Home />} />
