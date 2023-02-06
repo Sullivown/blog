@@ -52,7 +52,6 @@ function PostSummary(props) {
 				</p>
 				<p>{props.post.creation_date}</p>
 				<p>{props.post.status}</p>
-
 				{(props.post.user._id === user.id || user.admin) && (
 					<StyledControlsDiv>
 						<Link
