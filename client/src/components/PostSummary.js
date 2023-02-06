@@ -32,6 +32,8 @@ function PostSummary(props) {
 		},
 	});
 
+	console.log(user);
+
 	return (
 		<StyledPostSummaryContainer>
 			<StyledPostSummary>
@@ -54,9 +56,11 @@ function PostSummary(props) {
 				>
 					<button disabled={isLoadingMutate}>Edit</button>
 				</Link>
-				<button onClick={mutate} disabled={isLoadingMutate}>
-					Delete
-				</button>
+				{(props.post.user._id === user.id || user.admin) && (
+					<button onClick={mutate} disabled={isLoadingMutate}>
+						Delete
+					</button>
+				)}
 			</StyledPostSummary>
 		</StyledPostSummaryContainer>
 	);
