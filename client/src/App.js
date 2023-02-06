@@ -13,6 +13,7 @@ import MyPosts from './pages/dashboard/MyPosts';
 import CreatePost from './pages/dashboard/CreatePost';
 import EditPost from './pages/dashboard/EditPost';
 import User from './pages/User';
+import Header from './page-sections/header/Header';
 
 function App() {
 	const [user, setUser] = useLocalStorage('user', null);
@@ -20,6 +21,7 @@ function App() {
 	return (
 		<>
 			<UserContext.Provider value={user}>
+				<Header />
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route
