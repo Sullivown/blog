@@ -7,10 +7,10 @@ const StyledHeader = styled.header`
 	background-color: antiquewhite;
 `;
 
-function Header() {
+function Header(props) {
 	return (
 		<StyledHeader>
-			<Navbar />
+			<Navbar setUser={props.setUser} />
 		</StyledHeader>
 	);
 }

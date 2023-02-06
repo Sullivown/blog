@@ -1,9 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-
-import UserContext from '../context/userContext';
 
 import Messages from './Messages';
 
@@ -14,7 +12,6 @@ const StyledLoginForm = styled.form``;
 function LoginForm(props) {
 	const [formData, setFormData] = useState({ email: '', password: '' });
 	const [formErrors, setFormErrors] = useState([]);
-	const user = useContext(UserContext);
 	const navigate = useNavigate();
 
 	const { mutate } = useMutation({
@@ -53,44 +50,34 @@ function LoginForm(props) {
 		}));
 	};
 
-	const handleLogoutClick = () => {
-		props.setUser(null);
-	};
-
 	return (
 		<StyledLoginFormContainer>
 			{formErrors.length > 0 && (
 				<Messages messages={formErrors} messagesType='error' />
 			)}
-			{user ? (
-				<>
-					<p>'You are logged in!'</p>
-					<button onClick={handleLogoutClick}>Log Out</button>
-				</>
-			) : (
-				<StyledLoginForm onSubmit={(event) => mutate(event)}>
-					<label htmlFor='email'>Email</label>
-					<input
-						id='email'
-						type='email'
-						name='email'
-						value={formData.email}
-						onChange={handleChange}
-						required
-					></input>
-					<label htmlFor='password'>Password</label>
-					<input
-						id='password'
-						type='password'
-						name='password'
-						autoComplete='off'
-						value={formData.password}
-						onChange={handleChange}
-						required
-					></input>
-					<button type='submit'>Login</button>
-				</StyledLoginForm>
-			)}
+
+			<StyledLoginForm onSubmit={(event) => mutate(event)}>
+				<label htmlFor='email'>Email</label>
+				<input
+					id='email'
+					type='email'
+					name='email'
+					value={formData.email}
+					onChange={handleChange}
+					required
+				></input>
+				<label htmlFor='password'>Password</label>
+				<input
+					id='password'
+					type='password'
+					name='password'
+					autoComplete='off'
+					value={formData.password}
+					onChange={handleChange}
+					required
+				></input>
+				<button type='submit'>Login</button>
+			</StyledLoginForm>
 		</StyledLoginFormContainer>
 	);
 }

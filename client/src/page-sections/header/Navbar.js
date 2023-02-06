@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import UserContext from '../../context/userContext';
 
 const StyledNavBar = styled.nav``;
@@ -34,8 +34,14 @@ const StyledLink = styled(Link)`
 	text-decoration: none;
 `;
 
-function Navbar() {
+function Navbar(props) {
 	const user = useContext(UserContext);
+	const navigate = useNavigate();
+
+	const handleLogoutClick = () => {
+		props.setUser(null);
+		navigate('/');
+	};
 
 	return (
 		<StyledNavBar>
@@ -63,9 +69,15 @@ function Navbar() {
 						)}
 
 						<StyledLi>
-							<StyledLink to='login'>
-								{user ? 'Log Out' : 'Login / Signup'}
-							</StyledLink>
+							{user ? (
+								<StyledLink onClick={handleLogoutClick}>
+									Log Out
+								</StyledLink>
+							) : (
+								<StyledLink to='login'>
+									Login / Signup
+								</StyledLink>
+							)}
 						</StyledLi>
 					</StyledUl>
 				</StyledNavRight>

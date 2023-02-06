@@ -1,11 +1,12 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import useLocalStorage from './hooks/useLocalStorage';
 import UserContext from './context/userContext';
 import GlobalStyle from './style/GlobalStyle';
 
 import Home from './pages/Home';
+import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Post from './pages/Post';
 import Posts from './pages/Posts';
@@ -25,12 +26,24 @@ function App() {
 		<>
 			<UserContext.Provider value={user}>
 				<GlobalStyle />
-				<Header />
+				<Header setUser={setUser} />
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route
 						path='/login'
-						element={<Login setUser={setUser} />}
+						element={
+							user ? (
+								<Navigate to='/dashboard' />
+							) : (
+								<Login setUser={setUser} />
+							)
+						}
+					/>
+					<Route
+						path='/signup'
+						element={
+							user ? <Navigate to='/dashboard' /> : <SignUp />
+						}
 					/>
 					<Route path='/posts'>
 						<Route index element={<Posts />} />
