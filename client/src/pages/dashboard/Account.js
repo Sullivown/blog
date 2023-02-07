@@ -8,11 +8,11 @@ const AccountContainer = styled.div`
 	align-items: center;
 `;
 
-function Account() {
+function Account(props) {
 	return (
 		<AccountContainer>
 			<h1>Account Settings</h1>
-			<UserForm />
+			<UserForm setUser={props.setUser} />
 		</AccountContainer>
 	);
 }

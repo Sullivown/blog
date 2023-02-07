@@ -47,7 +47,7 @@ function Navbar(props) {
 		<StyledNavBar>
 			<StyledNavContainer>
 				<StyledSiteTitle>
-					<StyledLink>Community Blog</StyledLink>
+					<StyledLink to='/'>Community Blog</StyledLink>
 				</StyledSiteTitle>
 				<StyledNavRight>
 					<StyledUl>

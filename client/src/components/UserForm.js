@@ -29,11 +29,11 @@ function UserForm(props) {
 		password: '',
 		password_confirm: '',
 	});
-	const ownAccount = location.pathname.includes('/dashboard/account');
+	const isOwnAccount = location.pathname.includes('/dashboard/account');
 
 	const { error } = useQuery({
 		queryKey: ['users', id || currentUser.id],
-		enabled: id || ownAccount ? true : false,
+		enabled: id || isOwnAccount ? true : false,
 		queryFn: () => getUser(id || currentUser.id),
 		onSuccess: (data) => {
 			setFormData((prevFormData) => ({ ...prevFormData, ...data.user }));
@@ -44,10 +44,10 @@ function UserForm(props) {
 		mutationFn: async (event) => {
 			event.preventDefault();
 			setMessages([]);
-			if (!id) {
-				return postUser(formData, currentUser);
+			if (!id && (!isOwnAccount || currentUser.admin)) {
+				return postUser(formData);
 			} else {
-				return putUser(currentUser._id, formData, currentUser);
+				return putUser(id || currentUser.id, formData, currentUser);
 			}
 		},
 		onError: (error) => {
@@ -83,13 +83,18 @@ function UserForm(props) {
 			}
 
 			// Own account edited by currentUser
-			if (!id && currentUser) {
+			if (!id && isOwnAccount) {
+				// Update localStoarge user details
+				props.setUser((prevData) => ({
+					...prevData,
+					...mutateData.user,
+				}));
 				setMessages([
 					{
 						message: 'Account settings edited successfully!',
 						type: 'success',
 						link: {
-							url: `/users/${mutateData.post._id}`,
+							url: `/users/${mutateData.user._id}`,
 							text: 'View profile',
 						},
 					},
@@ -163,7 +168,7 @@ function UserForm(props) {
 					autoComplete='off'
 					value={formData.password}
 					onChange={handleChange}
-					required
+					required={!isOwnAccount && !currentUser.admin}
 				></input>
 				<label htmlFor='password_confirm'>Confirm Password</label>
 				<input
@@ -173,7 +178,7 @@ function UserForm(props) {
 					autoComplete='off'
 					value={formData.password_confirm}
 					onChange={handleChange}
-					required
+					required={!isOwnAccount && !currentUser.admin}
 				></input>
 				<button type='submit' disabled={isLoadingMutate}>
 					{currentUser ? 'Update Details' : 'Create Account'}

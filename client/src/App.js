@@ -57,16 +57,24 @@ function App() {
 					</Route>
 					<Route
 						path='/dashboard'
-						element={user ? <Dashboard /> : <SignUp />}
+						element={
+							user ? <Dashboard /> : <SignUp setUser={setUser} />
+						}
 					>
 						<Route path='posts'>
 							<Route index element={<MyPosts />} />
 							<Route path='create' element={<CreatePost />} />
 							<Route path=':id' element={<EditPost />} />
 						</Route>
-						<Route path='account' element={<Account />} />
+						<Route
+							path='account'
+							element={<Account setUser={setUser} />}
+						/>
 						<Route path='admin' element={<Admin />}>
-							<Route path='users' element={<Home />} />
+							<Route
+								path='users'
+								element={<Home setUser={setUser} />}
+							/>
 							<Route path='posts' element={<Home />} />
 						</Route>
 					</Route>
