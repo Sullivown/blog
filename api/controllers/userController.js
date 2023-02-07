@@ -26,7 +26,7 @@ module.exports.user_detail = function (req, res, next) {
 				Post.find({ user: req.params.id })
 					.populate({
 						path: 'user',
-						select: 'first_name last_name email',
+						select: 'first_name last_name',
 					})
 					.sort([['creation_date', 'descending']])
 					.exec(callback);
@@ -39,7 +39,12 @@ module.exports.user_detail = function (req, res, next) {
 
 			res.json({
 				message: 'User detail request successful',
-				user: results.user,
+				user: {
+					first_name: results.user.first_name,
+					last_name: results.user.last_name,
+					email: results.user.email,
+					admin: results.user.admin,
+				},
 				user_posts: results.user_posts,
 			});
 		}

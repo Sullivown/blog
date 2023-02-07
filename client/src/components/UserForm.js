@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import UserContext from '../context/userContext';
 
@@ -18,6 +18,7 @@ const StyledUserForm = styled.form`
 
 function UserForm(props) {
 	const currentUser = useContext(UserContext);
+	const location = useLocation();
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [messages, setMessages] = useState([]);
@@ -28,13 +29,14 @@ function UserForm(props) {
 		password: '',
 		password_confirm: '',
 	});
+	const ownAccount = location.pathname.includes('/dashboard/account');
 
 	const { error } = useQuery({
-		queryKey: ['users', id],
-		enabled: id ? true : false,
-		queryFn: () => getUser(id),
+		queryKey: ['users', id || currentUser.id],
+		enabled: id || ownAccount ? true : false,
+		queryFn: () => getUser(id || currentUser.id),
 		onSuccess: (data) => {
-			setFormData(data.user);
+			setFormData((prevFormData) => ({ ...prevFormData, ...data.user }));
 		},
 	});
 
@@ -138,7 +140,7 @@ function UserForm(props) {
 				<label htmlFor='last_name'>Last Name</label>
 				<input
 					id='last_name'
-					type='last_name'
+					type='text'
 					name='last_name'
 					value={formData.last_name}
 					onChange={handleChange}
