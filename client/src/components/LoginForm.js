@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Messages from './Messages';
 import { postLogin } from '../api/auth';
@@ -11,9 +11,10 @@ const StyledLoginFormContainer = styled.div``;
 const StyledLoginForm = styled.form``;
 
 function LoginForm(props) {
-	const [formData, setFormData] = useState({ email: '', password: '' });
-	const [formErrors, setFormErrors] = useState([]);
 	const navigate = useNavigate();
+	const location = useLocation();
+	const [formData, setFormData] = useState({ email: '', password: '' });
+	const [messages, setMessages] = useState(location.state?.messages || []);
 
 	const { mutate } = useMutation({
 		mutationFn: (event) => {
@@ -21,7 +22,7 @@ function LoginForm(props) {
 			return postLogin(formData);
 		},
 		onError: (error) => {
-			setFormErrors([error.message]);
+			setMessages([{ message: error.message, type: 'error' }]);
 		},
 		onSuccess: (data) => {
 			props.setUser({ ...data.user, token: data.token });
@@ -39,8 +40,8 @@ function LoginForm(props) {
 
 	return (
 		<StyledLoginFormContainer>
-			{formErrors.length > 0 && (
-				<Messages messages={formErrors} messagesType='error' />
+			{messages.length > 0 && (
+				<Messages messages={messages} messagesType='error' />
 			)}
 
 			<StyledLoginForm onSubmit={(event) => mutate(event)}>

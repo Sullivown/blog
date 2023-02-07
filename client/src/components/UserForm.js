@@ -54,7 +54,16 @@ function UserForm(props) {
 		onSuccess: (mutateData) => {
 			// New account created by new user
 			if (!id && !currentUser) {
-				navigate(`/`);
+				navigate(`/login`, {
+					state: {
+						messages: [
+							{
+								message: 'Account created successfully!',
+								type: 'success',
+							},
+						],
+					},
+				});
 			}
 
 			// New account created by admin
