@@ -13,6 +13,7 @@ const StyledPostFormContainer = styled.div``;
 const StyledPostForm = styled.form``;
 
 function PostForm() {
+	const user = useContext(UserContext);
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -22,7 +23,6 @@ function PostForm() {
 		status: 'Draft',
 	});
 	const [messages, setMessages] = useState(location.state?.messages || []);
-	const user = useContext(UserContext);
 
 	const { error } = useQuery({
 		queryKey: ['posts', id],

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import SignUpForm from '../components/SignUpForm';
+import UserForm from '../components/UserForm';
 
 const SignUpContainer = styled.div`
 	display: flex;
@@ -12,8 +12,8 @@ const SignUpContainer = styled.div`
 function SignUp(props) {
 	return (
 		<SignUpContainer>
-			<h1>SignUp</h1>
-			<SignUpForm />
+			<h1>Sign Up</h1>
+			<UserForm />
 		</SignUpContainer>
 	);
 }

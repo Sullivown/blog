@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import SignUpForm from '../../components/SignUpForm';
+import UserForm from '../../components/UserForm';
 
 const AccountContainer = styled.div`
 	display: flex;
@@ -12,7 +12,7 @@ function Account() {
 	return (
 		<AccountContainer>
 			<h1>Account Settings</h1>
-			<SignUpForm edit={true} />
+			<UserForm />
 		</AccountContainer>
 	);
 }
