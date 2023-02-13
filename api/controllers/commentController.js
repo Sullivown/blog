@@ -70,9 +70,12 @@ module.exports.comment_create = [
 					return next(err);
 				}
 			});
-		});
 
-		res.json({ message: 'Comment created successfully', comment });
+			res.json({
+				message: 'Comment created successfully',
+				comment,
+			});
+		});
 	},
 ];
 

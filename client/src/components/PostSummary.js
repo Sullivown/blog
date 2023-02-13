@@ -24,15 +24,19 @@ function PostSummary(props) {
 	const user = useContext(UserContext);
 	const queryClient = useQueryClient();
 	const { mutate, isLoading: isLoadingMutate } = useMutation({
-		mutationFn: (event) => {
-			event.preventDefault();
-			return deletePost(props.post._id, user);
+		mutationFn: (postId) => {
+			return deletePost(postId, user);
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['users'] });
+			queryClient.invalidateQueries({ queryKey: ['users', user.id] });
 			queryClient.invalidateQueries({ queryKey: ['posts'] });
 		},
 	});
+
+	const handleClick = (event) => {
+		event.preventDefault();
+		mutate(props.post._id);
+	};
 
 	return (
 		<StyledPostSummaryContainer>
@@ -52,7 +56,10 @@ function PostSummary(props) {
 						<Link to={`/dashboard/posts/${props.post._id}`}>
 							<button disabled={isLoadingMutate}>Edit</button>
 						</Link>
-						<button onClick={mutate} disabled={isLoadingMutate}>
+						<button
+							onClick={handleClick}
+							disabled={isLoadingMutate}
+						>
 							Delete
 						</button>
 					</StyledControlsDiv>

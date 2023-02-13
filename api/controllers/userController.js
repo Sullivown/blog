@@ -44,6 +44,7 @@ module.exports.user_detail = function (req, res, next) {
 					last_name: results.user.last_name,
 					email: results.user.email,
 					admin: results.user.admin,
+					creation_date: results.user.creation_date,
 				},
 				user_posts: results.user_posts,
 			});
