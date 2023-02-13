@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { editComment, deleteComment } from '../api/comment';
+import { deleteComment } from '../api/comment';
 import UserContext from '../context/userContext';
 
 const StyledCommentDetail = styled.div`
@@ -51,6 +51,7 @@ function CommentDetail(props) {
 						value='edit'
 						type='button'
 						onClick={handleControlsClick}
+						disabled={isLoadingMutate}
 					>
 						Edit
 					</button>
@@ -58,6 +59,7 @@ function CommentDetail(props) {
 						value='delete'
 						type='button'
 						onClick={handleControlsClick}
+						disabled={isLoadingMutate}
 					>
 						Delete
 					</button>
