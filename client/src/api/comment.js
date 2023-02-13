@@ -15,7 +15,7 @@ export async function postComment({ postId, formData, user }) {
 	return res.data;
 }
 
-export async function editComment({ postId, commentId, formData, user }) {
+export async function putComment({ postId, commentId, formData, user }) {
 	const res = await axios.put(
 		`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}/comments/${commentId}`,
 		formData,

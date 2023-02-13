@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
-import { postComment } from '../api/comment';
+import { postComment, putComment } from '../api/comment';
 import UserContext from '../context/userContext';
 
 const StyledCommentFormContainer = styled.div``;
@@ -15,14 +15,28 @@ const StyledCommentForm = styled.form`
 function CommentForm(props) {
 	const user = useContext(UserContext);
 	const queryClient = useQueryClient();
-	const [formData, setFormData] = useState({ content: '' });
+	const [formData, setFormData] = useState(
+		props.comment ? { content: props.comment.content } : { content: '' }
+	);
 	const { mutate, isLoading: isLoadingMutate } = useMutation({
-		mutationFn: postComment,
+		mutationFn: () => {
+			if (props.isBeingEdited) {
+				return putComment({
+					postId: props.post._id,
+					commentId: props.comment._id,
+					formData,
+					user,
+				});
+			} else {
+				return postComment({ postId: props.post._id, formData, user });
+			}
+		},
 		onError: (error) => {
 			console.log(error);
 		},
 		onSuccess: () => {
 			setFormData({ content: '' });
+			props.isBeingEdited && props.setIsBeingEdited(false);
 			return queryClient.invalidateQueries({ queryKey: ['posts'] });
 		},
 	});
@@ -37,7 +51,7 @@ function CommentForm(props) {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		mutate({ postId: props.post._id, formData, user });
+		mutate();
 	};
 
 	return (
@@ -49,7 +63,9 @@ function CommentForm(props) {
 					value={formData.content}
 					onChange={handleChange}
 				></textarea>
-				<button disabled={isLoadingMutate}>Add Comment</button>
+				<button disabled={isLoadingMutate}>
+					{props.isBeingEdited ? 'Save' : 'Add Comment'}
+				</button>
 			</StyledCommentForm>
 		</StyledCommentFormContainer>
 	);
