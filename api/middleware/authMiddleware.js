@@ -42,12 +42,14 @@ module.exports.isOwn = function (req, res, next) {
 					return next(err);
 				}
 
-				if (comment.user.id === req.user?.id) {
+				if (comment.user == req.user?.id) {
 					next();
 				} else {
 					res.status(401).json({
 						message:
-							'You are not authorized to view or edit this resource',
+							'You are not authorized to view or edit this resource! It is not yours!',
+						commentUser: comment.user,
+						requestUserId: req.user?.id,
 					});
 				}
 			});

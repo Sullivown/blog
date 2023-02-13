@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
+import UserContext from '../context/userContext';
 
 const StyledPostDetailContainer = styled.div`
 	border: 1px solid black;
@@ -15,6 +16,7 @@ const StyledPostDetail = styled.div`
 `;
 
 function PostDetail(props) {
+	const currentUser = useContext(UserContext);
 	return (
 		<StyledPostDetailContainer>
 			<StyledPostDetail>
@@ -36,7 +38,9 @@ function PostDetail(props) {
 			{props.showComments && (
 				<CommentList comments={props.post.comments} />
 			)}
-			{props.showComments && <CommentForm post={props.post} />}
+			{props.showComments && currentUser && (
+				<CommentForm post={props.post} />
+			)}
 		</StyledPostDetailContainer>
 	);
 }

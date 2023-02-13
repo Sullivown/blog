@@ -137,7 +137,7 @@ module.exports.comment_delete = function (req, res, next) {
 			}
 
 			results.post.comments.filter(
-				(comment) => comment != results.comment._id
+				(comment) => comment._id != results.comment._id
 			);
 			results.post.save();
 
