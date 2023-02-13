@@ -88,36 +88,28 @@ module.exports.comment_update = [
 	(req, res, next) => {
 		const errors = validationResult(req);
 
-		const comment = new Comment({
-			_id: req.params.id,
-			post: req.params.postId,
-			content: req.body.content,
-			user: req.user.id,
-		});
-
 		if (!errors.isEmpty()) {
 			res.json({
 				message: 'Comment creation failed',
-				comment,
 				errors: errors.array(),
 			});
 			return;
 		}
 
-		Comment.findByIdAndUpdate(
-			req.params.id,
-			comment,
-			(err, originalComment) => {
-				if (err) {
-					console.log(err);
-					return next(err);
-				}
-				res.json({
-					message: 'Comment updated successfully',
-					comment: comment,
-				});
+		Comment.findById(req.params.id).exec(function (err, comment) {
+			if (err) {
+				return next(err);
 			}
-		);
+
+			comment.content = req.body.content;
+
+			comment.save();
+
+			res.json({
+				message: 'Comment updated successfully',
+				comment,
+			});
+		});
 	},
 ];
 
