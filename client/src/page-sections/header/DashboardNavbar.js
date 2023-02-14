@@ -44,7 +44,7 @@ function DashboardNavbar(props) {
 								My Posts
 							</StyledLink>
 						</StyledLi>
-						{user.admin && (
+						{user?.admin && (
 							<>
 								<StyledLi>
 									<StyledLink to='admin/posts'>

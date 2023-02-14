@@ -53,11 +53,7 @@ function Main(props) {
 				<Route
 					path='/dashboard'
 					element={
-						props.user ? (
-							<Dashboard />
-						) : (
-							<SignUp setUser={props.setUser} />
-						)
+						props.user ? <Dashboard /> : <Navigate to='/login' />
 					}
 				>
 					<Route path='posts'>

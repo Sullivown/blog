@@ -32,7 +32,7 @@ function UserForm(props) {
 	const isOwnAccount = location.pathname.includes('/dashboard/account');
 
 	const { error } = useQuery({
-		queryKey: ['users', id || currentUser.id],
+		queryKey: ['users', id || currentUser?.id],
 		enabled: id || isOwnAccount ? true : false,
 		queryFn: () => getUser(id || currentUser.id),
 		onSuccess: (data) => {
@@ -168,7 +168,7 @@ function UserForm(props) {
 					autoComplete='off'
 					value={formData.password}
 					onChange={handleChange}
-					required={!isOwnAccount && !currentUser.admin}
+					required={!isOwnAccount && !currentUser?.admin}
 				></input>
 				<label htmlFor='password_confirm'>Confirm Password</label>
 				<input
@@ -178,7 +178,7 @@ function UserForm(props) {
 					autoComplete='off'
 					value={formData.password_confirm}
 					onChange={handleChange}
-					required={!isOwnAccount && !currentUser.admin}
+					required={!isOwnAccount && !currentUser?.admin}
 				></input>
 				<button type='submit' disabled={isLoadingMutate}>
 					{currentUser ? 'Update Details' : 'Create Account'}
