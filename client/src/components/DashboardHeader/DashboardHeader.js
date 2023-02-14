@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import DashboardNavbar from './DashboardNavbar';
+import DashboardNavbar from '../../page-sections/header/DashboardNavbar';
 
 const StyledHeader = styled.header`
 	background-color: antiquewhite;

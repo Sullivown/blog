@@ -44,7 +44,7 @@ function Navbar(props) {
 	};
 
 	return (
-		<StyledNavBar>
+		<StyledNavBar aria-label='primary'>
 			<StyledNavContainer>
 				<StyledSiteTitle>
 					<StyledLink to='/'>Community Blog</StyledLink>
