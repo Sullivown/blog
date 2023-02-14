@@ -1,0 +1,86 @@
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+import Home from '../pages/Home';
+import SignUp from '../pages/SignUp';
+import Login from '../pages/Login';
+import Post from '../pages/Post';
+import Posts from '../pages/Posts';
+import User from '../pages/User';
+import Users from '../pages/Users';
+import Dashboard from '../pages/dashboard/Dashboard';
+import MyPosts from '../pages/dashboard/MyPosts';
+import CreatePost from '../pages/dashboard/CreatePost';
+import EditPost from '../pages/dashboard/EditPost';
+
+import Admin from '../pages/dashboard/Admin';
+import Account from '../pages/dashboard/Account';
+
+const StyledMain = styled.main`
+	width: 100%;
+`;
+
+function Main(props) {
+	return (
+		<StyledMain>
+			<Routes>
+				<Route path='/' element={<Home />} />
+				<Route
+					path='/login'
+					element={
+						props.user ? (
+							<Navigate to='/dashboard' />
+						) : (
+							<Login setUser={props.setUser} />
+						)
+					}
+				/>
+				<Route
+					path='/signup'
+					element={
+						props.user ? <Navigate to='/dashboard' /> : <SignUp />
+					}
+				/>
+				<Route path='/posts'>
+					<Route index element={<Posts />} />
+					<Route path=':id' element={<Post />} />
+				</Route>
+				<Route path='/users'>
+					<Route index element={<Users />} />
+					<Route path=':id' element={<User />} />
+				</Route>
+				<Route
+					path='/dashboard'
+					element={
+						props.user ? (
+							<Dashboard />
+						) : (
+							<SignUp setUser={props.setUser} />
+						)
+					}
+				>
+					<Route path='posts'>
+						<Route index element={<MyPosts />} />
+						<Route path='create' element={<CreatePost />} />
+						<Route path=':id' element={<EditPost />} />
+					</Route>
+					<Route
+						path='account'
+						element={<Account setUser={props.setUser} />}
+					/>
+					<Route path='admin' element={<Admin />}>
+						<Route
+							path='users'
+							element={<Home setUser={props.setUser} />}
+						/>
+						<Route path='posts' element={<Home />} />
+					</Route>
+				</Route>
+				<Route path='/*' element={<Home />} />
+			</Routes>
+		</StyledMain>
+	);
+}
+
+export default Main;
