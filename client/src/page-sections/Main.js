@@ -19,6 +19,7 @@ import Admin from '../pages/dashboard/admin/Admin';
 import Account from '../pages/dashboard/Account';
 import AllUsers from '../pages/dashboard/admin/AllUsers';
 import UserForm from '../components/UserForm';
+import NotFound from '../pages/NotFound';
 
 const StyledMain = styled.main`
 	width: 100%;
@@ -69,7 +70,16 @@ function Main(props) {
 						element={<Account setUser={props.setUser} />}
 					/>
 					<Route path='admin'>
-						<Route index element={<Admin />} />
+						<Route
+							index
+							element={
+								props.user ? (
+									<Admin />
+								) : (
+									<Navigate to='/login' />
+								)
+							}
+						/>
 						<Route path='users'>
 							<Route index element={<AllUsers />} />
 							<Route path=':id' element={<UserForm />} />
@@ -77,7 +87,7 @@ function Main(props) {
 						<Route path='posts' element={<AllPosts />} />
 					</Route>
 				</Route>
-				<Route path='/*' element={<Home />} />
+				<Route path='/*' element={<NotFound />} />
 			</Routes>
 		</StyledMain>
 	);
