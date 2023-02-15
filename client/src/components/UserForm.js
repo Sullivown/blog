@@ -108,7 +108,7 @@ function UserForm(props) {
 						message: 'User edited successfully!',
 						type: 'success',
 						link: {
-							url: `/users/${mutateData.post._id}`,
+							url: `/users/${mutateData.user._id}`,
 							text: 'View profile',
 						},
 					},
