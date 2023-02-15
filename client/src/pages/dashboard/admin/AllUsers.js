@@ -20,8 +20,6 @@ function AllUsers() {
 		queryFn: () => getUsers(),
 	});
 
-	console.log(data);
-
 	if (error) return 'An error has occurred: ' + error.message;
 
 	return (

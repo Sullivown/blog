@@ -12,7 +12,6 @@ const StyledUserDetail = styled.div`
 `;
 
 function UserDetail(props) {
-	console.log(props);
 	return (
 		<StyledUserDetailContainer>
 			<StyledUserDetail>

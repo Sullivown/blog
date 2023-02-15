@@ -33,12 +33,10 @@ function UserSummary(props) {
 		},
 	});
 
-	console.log(props.user);
-
 	return (
 		<StyledUserSummaryContainer>
 			<StyledUserSummary>
-				<Link to={`/dashboard/users/${props.user._id}`}>
+				<Link to={`/dashboard/admin/users/${props.user._id}`}>
 					<h2>{props.user.title}</h2>
 				</Link>
 				<p>{props.user.first_name + ' ' + props.user.last_name}</p>
@@ -46,7 +44,7 @@ function UserSummary(props) {
 				<p>{props.user.status}</p>
 				{(props.user._id === user.id || user.admin) && (
 					<StyledControlsDiv>
-						<Link to={`/dashboard/users/${props.user._id}`}>
+						<Link to={`/dashboard/admin/users/${props.user._id}`}>
 							<button disabled={isLoadingMutate}>Edit</button>
 						</Link>
 						<button onClick={mutate} disabled={isLoadingMutate}>

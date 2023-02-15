@@ -18,6 +18,7 @@ import AllPosts from '../pages/dashboard/admin/AllPosts';
 import Admin from '../pages/dashboard/admin/Admin';
 import Account from '../pages/dashboard/Account';
 import AllUsers from '../pages/dashboard/admin/AllUsers';
+import UserForm from '../components/UserForm';
 
 const StyledMain = styled.main`
 	width: 100%;
@@ -67,8 +68,12 @@ function Main(props) {
 						path='account'
 						element={<Account setUser={props.setUser} />}
 					/>
-					<Route path='admin' element={<Admin />}>
-						<Route path='users' element={<AllUsers />} />
+					<Route path='admin'>
+						<Route index element={<Admin />} />
+						<Route path='users'>
+							<Route index element={<AllUsers />} />
+							<Route path=':id' element={<UserForm />} />
+						</Route>
 						<Route path='posts' element={<AllPosts />} />
 					</Route>
 				</Route>
