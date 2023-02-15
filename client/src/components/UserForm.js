@@ -28,6 +28,7 @@ function UserForm(props) {
 		email: '',
 		password: '',
 		password_confirm: '',
+		admin: false,
 	});
 	const isOwnAccount = location.pathname.includes('/dashboard/account');
 
@@ -118,10 +119,10 @@ function UserForm(props) {
 	});
 
 	const handleChange = (event) => {
-		const target = event.target;
+		const { name, value, type, checked } = event.target;
 		setFormData((prevData) => ({
 			...prevData,
-			[target.name]: target.value,
+			[name]: type === 'checkbox' ? checked : value,
 		}));
 	};
 
@@ -180,6 +181,18 @@ function UserForm(props) {
 					onChange={handleChange}
 					required={!isOwnAccount && !currentUser?.admin}
 				></input>
+				{currentUser?.admin && (
+					<>
+						<label htmlFor='admin'>Admin</label>
+						<input
+							type='checkbox'
+							id='admin'
+							name='admin'
+							checked={formData.admin}
+							onChange={handleChange}
+						/>
+					</>
+				)}
 				<button type='submit' disabled={isLoadingMutate}>
 					{currentUser ? 'Update Details' : 'Create Account'}
 				</button>
