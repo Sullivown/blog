@@ -29,10 +29,11 @@ function UserSummary(props) {
 			return deleteUser(props.user._id, user);
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['users'] });
-			queryClient.invalidateQueries({ queryKey: ['users'] });
+			return queryClient.invalidateQueries({ queryKey: ['users'] });
 		},
 	});
+
+	console.log(props.user);
 
 	return (
 		<StyledUserSummaryContainer>
@@ -40,14 +41,10 @@ function UserSummary(props) {
 				<Link to={`/dashboard/users/${props.user._id}`}>
 					<h2>{props.user.title}</h2>
 				</Link>
-				<p>
-					{props.user.user.first_name +
-						' ' +
-						props.user.user.last_name}
-				</p>
+				<p>{props.user.first_name + ' ' + props.user.last_name}</p>
 				<p>{props.user.creation_date}</p>
 				<p>{props.user.status}</p>
-				{(props.user.user._id === user.id || user.admin) && (
+				{(props.user._id === user.id || user.admin) && (
 					<StyledControlsDiv>
 						<Link to={`/dashboard/users/${props.user._id}`}>
 							<button disabled={isLoadingMutate}>Edit</button>

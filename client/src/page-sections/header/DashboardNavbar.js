@@ -47,12 +47,12 @@ function DashboardNavbar(props) {
 						{user?.admin && (
 							<>
 								<StyledLi>
-									<StyledLink to='admin/posts'>
+									<StyledLink to='dashboard/admin/posts'>
 										Posts Admin
 									</StyledLink>
 								</StyledLi>
 								<StyledLi>
-									<StyledLink to='admin/users'>
+									<StyledLink to='dashboard/admin/users'>
 										Users Admin
 									</StyledLink>
 								</StyledLi>

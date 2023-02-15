@@ -13,9 +13,11 @@ import Dashboard from '../pages/dashboard/Dashboard';
 import MyPosts from '../pages/dashboard/MyPosts';
 import CreatePost from '../pages/dashboard/CreatePost';
 import EditPost from '../pages/dashboard/EditPost';
+import AllPosts from '../pages/dashboard/admin/AllPosts';
 
-import Admin from '../pages/dashboard/Admin';
+import Admin from '../pages/dashboard/admin/Admin';
 import Account from '../pages/dashboard/Account';
+import AllUsers from '../pages/dashboard/admin/AllUsers';
 
 const StyledMain = styled.main`
 	width: 100%;
@@ -66,11 +68,8 @@ function Main(props) {
 						element={<Account setUser={props.setUser} />}
 					/>
 					<Route path='admin' element={<Admin />}>
-						<Route
-							path='users'
-							element={<Home setUser={props.setUser} />}
-						/>
-						<Route path='posts' element={<Home />} />
+						<Route path='users' element={<AllUsers />} />
+						<Route path='posts' element={<AllPosts />} />
 					</Route>
 				</Route>
 				<Route path='/*' element={<Home />} />

@@ -10,6 +10,7 @@ const StyledUserList = styled.div`
 `;
 
 function UserList(props) {
+	console.log(props);
 	const userElements = props.users.map((user) =>
 		props.summary ? (
 			<UserSummary key={user._id} user={user} />
