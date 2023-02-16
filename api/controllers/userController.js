@@ -126,10 +126,13 @@ module.exports.user_update = [
 		.isEmail()
 		.withMessage('You must enter a valid email address')
 		.escape(),
-	body('admin')
-		.isBoolean()
-		.withMessage('You must enter an admin value')
+	body('password').trim().escape(),
+	body('password_confirm')
+		.trim()
+		.custom((value, { req }) => value === req.body.password)
+		.withMessage('Passwords do not match')
 		.escape(),
+	body('admin').isBoolean().escape(),
 	(req, res, next) => {
 		const errors = validationResult(req);
 
@@ -141,7 +144,11 @@ module.exports.user_update = [
 			admin: req.body.admin,
 		});
 
+		// If password is given, update it
+		req.body.password && (user.password = req.body.password);
+
 		if (!errors.isEmpty()) {
+			console.log(errors);
 			res.json({
 				message: 'User update failed',
 				user,
@@ -150,7 +157,7 @@ module.exports.user_update = [
 			return;
 		}
 
-		User.findByIdAndUpdate(req.params.id, user, (err, originalUserData) => {
+		User.findByIdAndUpdate(req.params.id, user, (err) => {
 			if (err) {
 				return next(err);
 			}

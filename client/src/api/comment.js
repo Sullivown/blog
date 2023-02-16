@@ -31,9 +31,6 @@ export async function putComment({ postId, commentId, formData, user }) {
 }
 
 export async function deleteComment({ postId, commentId, user }) {
-	// console.log(postId);
-	// console.log(commentId);
-	// console.log(user.token);
 	const res = await axios.delete(
 		`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}/comments/${commentId}`,
 		{

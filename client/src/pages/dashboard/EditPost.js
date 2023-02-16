@@ -5,8 +5,9 @@ import { useParams } from 'react-router-dom';
 
 import WithLoading from '../../wrappers/WithLoading';
 import PostForm from '../../components/PostForm';
+import { getPost } from '../../api/post';
 
-const CreatePostContainer = styled.div`
+const EditPostContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -14,30 +15,22 @@ const CreatePostContainer = styled.div`
 
 const PostFormWithLoading = WithLoading(PostForm);
 
-function CreatePost() {
+function EditPost() {
 	const { id } = useParams();
 
 	const { isLoading, error, data } = useQuery({
-		queryKey: ['posts', parseInt(id)],
-		queryFn: async () => {
-			const response = await fetch(
-				`${process.env.REACT_APP_API_BASE_URL}/posts/${id}`
-			);
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			return response.json();
-		},
+		queryKey: ['posts', id],
+		queryFn: getPost({ postId: id }),
 	});
 
 	if (error) return 'An error has occurred: ' + error.message;
 
 	return (
-		<CreatePostContainer>
+		<EditPostContainer>
 			<h1>Edit Post</h1>
 			<PostFormWithLoading isLoading={isLoading} post={data?.post} />
-		</CreatePostContainer>
+		</EditPostContainer>
 	);
 }
 
-export default CreatePost;
+export default EditPost;

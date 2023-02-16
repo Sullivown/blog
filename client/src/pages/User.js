@@ -24,7 +24,7 @@ function User() {
 
 	const { isLoading, error, data, isFetching } = useQuery({
 		queryKey: ['users', id],
-		queryFn: () => getUser(id),
+		queryFn: () => getUser({ userId: id }),
 	});
 
 	if (error) return 'An error has occurred: ' + error.message;

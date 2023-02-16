@@ -21,7 +21,7 @@ function Post() {
 
 	const { isLoading, error, data, isFetching } = useQuery({
 		queryKey: ['posts', id],
-		queryFn: () => getPost(id),
+		queryFn: () => getPost({ postId: id }),
 	});
 
 	if (error) return 'An error has occurred: ' + error.message;

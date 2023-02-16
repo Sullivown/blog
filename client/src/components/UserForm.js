@@ -34,9 +34,14 @@ function UserForm(props) {
 	const { error } = useQuery({
 		queryKey: ['users', isEdit || currentUser?.id],
 		enabled: isEdit || isOwn ? true : false,
-		queryFn: () => getUser(id || currentUser.id),
+		queryFn: () => getUser({ userId: id || currentUser.id }),
 		onSuccess: (data) => {
-			setFormData((prevFormData) => ({ ...prevFormData, ...data.user }));
+			setFormData((prevFormData) => ({
+				...prevFormData,
+				...data.user,
+				password: '',
+				password_confirm: '',
+			}));
 		},
 	});
 
@@ -45,15 +50,27 @@ function UserForm(props) {
 			event.preventDefault();
 			setMessages([]);
 			if (!isEdit && (!isOwn || currentUser.admin)) {
-				return postUser(formData);
+				return postUser({ formData });
 			} else {
-				return putUser(id || currentUser.id, formData, currentUser);
+				return putUser({
+					userId: id || currentUser.id,
+					formData,
+					currentUser,
+				});
 			}
 		},
 		onError: (error) => {
 			setMessages([error.message]);
 		},
 		onSuccess: (mutateData) => {
+			if (mutateData.errors) {
+				const errors = mutateData.errors.map((errorMessage) => ({
+					...errorMessage,
+					type: 'error',
+				}));
+				setMessages(errors);
+				return;
+			}
 			// New account created by new user
 			if (!isEdit && !currentUser) {
 				navigate(`/login`, {
@@ -69,7 +86,7 @@ function UserForm(props) {
 			}
 
 			// New account created by admin
-			if (!id && currentUser?.admin) {
+			else if (!isEdit && currentUser?.admin) {
 				setMessages([
 					{
 						message: 'User created successfully!',
@@ -83,8 +100,8 @@ function UserForm(props) {
 			}
 
 			// Own account edited by currentUser
-			if (!isEdit && isOwn) {
-				// Update localStoarge user details
+			else if (isEdit && isOwn) {
+				// Update localStorage user details
 				props.setUser((prevData) => ({
 					...prevData,
 					...mutateData.user,
@@ -102,7 +119,7 @@ function UserForm(props) {
 			}
 
 			// Other user account edited by admin
-			if (isEdit) {
+			else if (isEdit) {
 				setMessages([
 					{
 						message: 'User edited successfully!',
@@ -129,9 +146,7 @@ function UserForm(props) {
 
 	return (
 		<StyledUserFormContainer>
-			{messages.length > 0 && (
-				<Messages messages={messages} messagesType='error' />
-			)}
+			{messages.length > 0 && <Messages messages={messages} />}
 			<StyledUserForm onSubmit={(event) => mutate(event)}>
 				<label htmlFor='first_name'>First Name</label>
 				<input
@@ -193,7 +208,7 @@ function UserForm(props) {
 					</>
 				)}
 				<button type='submit' disabled={isLoadingMutate}>
-					{currentUser ? 'Update Details' : 'Create Account'}
+					{isEdit ? 'Update Details' : 'Create Account'}
 				</button>
 			</StyledUserForm>
 		</StyledUserFormContainer>

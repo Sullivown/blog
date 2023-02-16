@@ -1,64 +1,52 @@
+import axios from 'axios';
+
 export async function getPosts() {
-	const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/posts`);
-	if (!response.ok) {
-		throw new Error('Network response was not ok');
-	}
-	return response.json();
+	const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/posts`);
+	return res.data;
 }
 
-export async function getPost(postId) {
-	const response = await fetch(
+export async function getPost({ postId }) {
+	const res = await axios.get(
 		`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`
 	);
-	if (!response.ok) {
-		throw new Error('Network response was not ok');
-	}
-	return response.json();
+
+	return res.data;
 }
 
-export async function postPost(formData, user) {
-	const response = await fetch(
+export async function postPost({ formData, user }) {
+	const res = await axios.post(
 		`${process.env.REACT_APP_API_BASE_URL}/posts`,
+		formData,
 		{
-			method: 'POST',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${user.token}`,
 			},
-			body: JSON.stringify(formData),
 		}
 	);
-	if (!response.ok) {
-		throw new Error(`Post creation unsuccessful`);
-	}
-	return response.json();
+	return res.data;
 }
 
-export async function putPost(postId, formData, user) {
-	const response = await fetch(
+export async function putPost({ postId, formData, user }) {
+	const res = await axios.put(
 		`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
+		formData,
 		{
-			method: 'PUT',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${user.token}`,
 			},
-			body: JSON.stringify(formData),
 		}
 	);
-	if (!response.ok) {
-		throw new Error(`Post edit unsuccessful`);
-	}
-	return response.json();
+	return res.data;
 }
 
-export async function deletePost(postId, user) {
-	const response = await fetch(
+export async function deletePost({ postId, user }) {
+	const res = await axios.delete(
 		`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
 		{
-			method: 'DELETE',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
@@ -66,8 +54,6 @@ export async function deletePost(postId, user) {
 			},
 		}
 	);
-	if (!response.ok) {
-		throw new Error(`Post delete unsuccessful`);
-	}
-	return response.json();
+
+	return res.data;
 }

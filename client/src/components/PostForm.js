@@ -23,11 +23,11 @@ function PostForm() {
 		status: 'Draft',
 	});
 	const [messages, setMessages] = useState(location.state?.messages || []);
-
+	console.log(id);
 	const { error } = useQuery({
 		queryKey: ['posts', id],
 		enabled: id ? true : false,
-		queryFn: () => getPost(id),
+		queryFn: () => getPost({ postId: id }),
 		onSuccess: (data) => {
 			setFormData(data.post);
 		},
@@ -38,9 +38,9 @@ function PostForm() {
 			event.preventDefault();
 			setMessages([]);
 			if (!id) {
-				return postPost(formData, user);
+				return postPost({ formData, user });
 			} else {
-				return putPost(id, formData, user);
+				return putPost({ postId: id, formData, user });
 			}
 		},
 		onError: (error) => {

@@ -20,7 +20,7 @@ const StyledMessage = styled.div`
 function Messages(props) {
 	const messageElements = props.messages.map((message, index) => (
 		<StyledMessage key={'message' + index} type={message.type}>
-			{message.message + ' '}
+			{message.message || message.msg + ' '}
 			{message.link && (
 				<Link to={message.link.url}>{message.link.text}</Link>
 			)}
