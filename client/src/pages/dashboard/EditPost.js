@@ -20,7 +20,7 @@ function EditPost() {
 
 	const { isLoading, error, data } = useQuery({
 		queryKey: ['posts', id],
-		queryFn: getPost({ postId: id }),
+		queryFn: () => getPost({ postId: id }),
 	});
 
 	if (error) return 'An error has occurred: ' + error.message;

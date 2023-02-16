@@ -9,7 +9,6 @@ export async function getPost({ postId }) {
 	const res = await axios.get(
 		`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`
 	);
-
 	return res.data;
 }
 

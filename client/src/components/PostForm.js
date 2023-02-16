@@ -1,39 +1,36 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import UserContext from '../context/userContext';
 
 import Messages from './Messages';
-import { getPost, postPost, putPost } from '../api/post';
+import { postPost, putPost } from '../api/post';
 
 const StyledPostFormContainer = styled.div``;
 
 const StyledPostForm = styled.form``;
 
-function PostForm() {
+function PostForm(props) {
 	const user = useContext(UserContext);
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [formData, setFormData] = useState({
-		title: '',
-		content: '',
-		status: 'Draft',
-	});
+	const [formData, setFormData] = useState(
+		props.post || {
+			title: '',
+			content: '',
+			status: 'Draft',
+		}
+	);
 	const [messages, setMessages] = useState(location.state?.messages || []);
-	console.log(id);
-	const { error } = useQuery({
-		queryKey: ['posts', id],
-		enabled: id ? true : false,
-		queryFn: () => getPost({ postId: id }),
-		onSuccess: (data) => {
-			setFormData(data.post);
-		},
-	});
 
-	const { mutate, isLoading: isLoadingMutate } = useMutation({
+	const {
+		mutate,
+		isLoading: isLoadingMutate,
+		error,
+	} = useMutation({
 		mutationFn: (event) => {
 			event.preventDefault();
 			setMessages([]);
