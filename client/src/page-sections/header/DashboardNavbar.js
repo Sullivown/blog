@@ -40,6 +40,11 @@ function DashboardNavbar(props) {
 				<StyledNavRight>
 					<StyledUl>
 						<StyledLi>
+							<StyledLink to='dashboard/posts/create'>
+								Create Post
+							</StyledLink>
+						</StyledLi>
+						<StyledLi>
 							<StyledLink to='dashboard/posts'>
 								My Posts
 							</StyledLink>
