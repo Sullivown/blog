@@ -12,7 +12,7 @@ export async function getPost({ postId }) {
 	return res.data;
 }
 
-export async function postPost({ formData, user }) {
+export async function postPost({ formData, currentUser }) {
 	const res = await axios.post(
 		`${process.env.REACT_APP_API_BASE_URL}/posts`,
 		formData,
@@ -20,14 +20,14 @@ export async function postPost({ formData, user }) {
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${user.token}`,
+				Authorization: `Bearer ${currentUser.token}`,
 			},
 		}
 	);
 	return res.data;
 }
 
-export async function putPost({ postId, formData, user }) {
+export async function putPost({ postId, formData, currentUser }) {
 	const res = await axios.put(
 		`${process.env.REACT_APP_API_BASE_URL}/posts/${postId}`,
 		formData,
@@ -35,7 +35,7 @@ export async function putPost({ postId, formData, user }) {
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${user.token}`,
+				Authorization: `Bearer ${currentUser.token}`,
 			},
 		}
 	);

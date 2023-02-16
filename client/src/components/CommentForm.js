@@ -13,7 +13,7 @@ const StyledCommentForm = styled.form`
 `;
 
 function CommentForm(props) {
-	const user = useContext(UserContext);
+	const currentUser = useContext(UserContext);
 	const queryClient = useQueryClient();
 	const [formData, setFormData] = useState(
 		props.comment ? { content: props.comment.content } : { content: '' }
@@ -25,10 +25,14 @@ function CommentForm(props) {
 					postId: props.post._id,
 					commentId: props.comment._id,
 					formData,
-					user,
+					currentUser,
 				});
 			} else {
-				return postComment({ postId: props.post._id, formData, user });
+				return postComment({
+					postId: props.post._id,
+					formData,
+					currentUser,
+				});
 			}
 		},
 		onError: (error) => {

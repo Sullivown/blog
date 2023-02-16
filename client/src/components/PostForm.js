@@ -13,7 +13,7 @@ const StyledPostFormContainer = styled.div``;
 const StyledPostForm = styled.form``;
 
 function PostForm(props) {
-	const user = useContext(UserContext);
+	const currentUser = useContext(UserContext);
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -35,9 +35,9 @@ function PostForm(props) {
 			event.preventDefault();
 			setMessages([]);
 			if (!id) {
-				return postPost({ formData, user });
+				return postPost({ formData, currentUser });
 			} else {
-				return putPost({ postId: id, formData, user });
+				return putPost({ postId: id, formData, currentUser });
 			}
 		},
 		onError: (error) => {
