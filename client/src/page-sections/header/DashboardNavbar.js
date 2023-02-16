@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import UserContext from '../../context/userContext';
 
 const StyledDashboardNavBar = styled.nav``;
@@ -27,8 +27,11 @@ const StyledUl = styled.ul`
 
 const StyledLi = styled.li``;
 
-const StyledLink = styled(Link)`
+const StyledNavLink = styled(NavLink)`
 	text-decoration: none;
+	&.active {
+		color: red;
+	}
 `;
 
 function DashboardNavbar(props) {
@@ -40,33 +43,33 @@ function DashboardNavbar(props) {
 				<StyledNavRight>
 					<StyledUl>
 						<StyledLi>
-							<StyledLink to='dashboard/posts/create'>
+							<StyledNavLink to='dashboard/posts/create'>
 								Create Post
-							</StyledLink>
+							</StyledNavLink>
 						</StyledLi>
 						<StyledLi>
-							<StyledLink to='dashboard/posts'>
+							<StyledNavLink to='dashboard/posts'>
 								My Posts
-							</StyledLink>
+							</StyledNavLink>
 						</StyledLi>
 						{user?.admin && (
 							<>
 								<StyledLi>
-									<StyledLink to='dashboard/admin/posts'>
+									<StyledNavLink to='dashboard/admin/posts'>
 										Posts Admin
-									</StyledLink>
+									</StyledNavLink>
 								</StyledLi>
 								<StyledLi>
-									<StyledLink to='dashboard/admin/users'>
+									<StyledNavLink to='dashboard/admin/users'>
 										Users Admin
-									</StyledLink>
+									</StyledNavLink>
 								</StyledLi>
 							</>
 						)}
 						<StyledLi>
-							<StyledLink to='dashboard/account'>
+							<StyledNavLink to='dashboard/account'>
 								Account Settings
-							</StyledLink>
+							</StyledNavLink>
 						</StyledLi>
 					</StyledUl>
 				</StyledNavRight>
