@@ -9,10 +9,11 @@ const AccountContainer = styled.div`
 `;
 
 function Account(props) {
+	const formSettings = { isEdit: true, isOwn: true };
 	return (
 		<AccountContainer>
 			<h1>Account Settings</h1>
-			<UserForm setUser={props.setUser} />
+			<UserForm setUser={props.setUser} settings={formSettings} />
 		</AccountContainer>
 	);
 }

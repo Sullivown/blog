@@ -40,7 +40,7 @@ function UserSummary(props) {
 					<h2>{props.user.title}</h2>
 				</Link>
 				<p>{props.user.first_name + ' ' + props.user.last_name}</p>
-				<p>{props.user.creation_date}</p>
+				<p>{props.user.admin ? 'Admin' : 'User'}</p>
 				<p>{props.user.status}</p>
 				{(props.user._id === user.id || user.admin) && (
 					<StyledControlsDiv>

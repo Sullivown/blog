@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import UserContext from '../context/userContext';
 
@@ -18,7 +18,6 @@ const StyledUserForm = styled.form`
 
 function UserForm(props) {
 	const currentUser = useContext(UserContext);
-	const location = useLocation();
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [messages, setMessages] = useState([]);
@@ -30,11 +29,11 @@ function UserForm(props) {
 		password_confirm: '',
 		admin: false,
 	});
-	const isOwnAccount = location.pathname.includes('/dashboard/account');
+	const { isEdit, isOwn } = props.settings;
 
 	const { error } = useQuery({
-		queryKey: ['users', id || currentUser?.id],
-		enabled: id || isOwnAccount ? true : false,
+		queryKey: ['users', isEdit || currentUser?.id],
+		enabled: isEdit || isOwn ? true : false,
 		queryFn: () => getUser(id || currentUser.id),
 		onSuccess: (data) => {
 			setFormData((prevFormData) => ({ ...prevFormData, ...data.user }));
@@ -45,7 +44,7 @@ function UserForm(props) {
 		mutationFn: async (event) => {
 			event.preventDefault();
 			setMessages([]);
-			if (!id && (!isOwnAccount || currentUser.admin)) {
+			if (!isEdit && (!isOwn || currentUser.admin)) {
 				return postUser(formData);
 			} else {
 				return putUser(id || currentUser.id, formData, currentUser);
@@ -56,7 +55,7 @@ function UserForm(props) {
 		},
 		onSuccess: (mutateData) => {
 			// New account created by new user
-			if (!id && !currentUser) {
+			if (!isEdit && !currentUser) {
 				navigate(`/login`, {
 					state: {
 						messages: [
@@ -84,7 +83,7 @@ function UserForm(props) {
 			}
 
 			// Own account edited by currentUser
-			if (!id && isOwnAccount) {
+			if (!isEdit && isOwn) {
 				// Update localStoarge user details
 				props.setUser((prevData) => ({
 					...prevData,
@@ -103,7 +102,7 @@ function UserForm(props) {
 			}
 
 			// Other user account edited by admin
-			if (id) {
+			if (isEdit) {
 				setMessages([
 					{
 						message: 'User edited successfully!',
@@ -169,7 +168,7 @@ function UserForm(props) {
 					autoComplete='off'
 					value={formData.password}
 					onChange={handleChange}
-					required={!isOwnAccount && !currentUser?.admin}
+					required={!isOwn && !currentUser?.admin}
 				></input>
 				<label htmlFor='password_confirm'>Confirm Password</label>
 				<input
@@ -179,7 +178,7 @@ function UserForm(props) {
 					autoComplete='off'
 					value={formData.password_confirm}
 					onChange={handleChange}
-					required={!isOwnAccount && !currentUser?.admin}
+					required={!isOwn && !currentUser?.admin}
 				></input>
 				{currentUser?.admin && (
 					<>

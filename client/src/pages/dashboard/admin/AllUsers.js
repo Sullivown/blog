@@ -5,6 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 import UserList from '../../../components/UserList';
 import WithLoading from '../../../wrappers/WithLoading';
 import { getUsers } from '../../../api/user';
+import { Link } from 'react-router-dom';
+
+const StyledControlsContainer = styled.div``;
 
 const AllUsersContainer = styled.div`
 	display: flex;
@@ -23,15 +26,22 @@ function AllUsers() {
 	if (error) return 'An error has occurred: ' + error.message;
 
 	return (
-		<AllUsersContainer>
-			<h1>All Users</h1>
-			{isFetching && <div>Updating...</div>}
-			<UserListWithLoading
-				isLoading={isLoading}
-				users={data ? data.user_list : []}
-				summary={true}
-			/>
-		</AllUsersContainer>
+		<>
+			<StyledControlsContainer>
+				<Link to='create'>
+					<button type='button'>Create New User</button>
+				</Link>
+			</StyledControlsContainer>
+			<AllUsersContainer>
+				<h1>All Users</h1>
+				{isFetching && <div>Updating...</div>}
+				<UserListWithLoading
+					isLoading={isLoading}
+					users={data ? data.user_list : []}
+					summary={true}
+				/>
+			</AllUsersContainer>
+		</>
 	);
 }
 

@@ -1,22 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
+import UserForm from '../../../components/UserForm';
 
-import UserForm from '../components/UserForm';
-
-const SignUpContainer = styled.div`
+const CreateUserContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 `;
 
-function SignUp() {
+function CreateUser() {
 	const formSettings = { isEdit: false, isOwn: false };
 	return (
-		<SignUpContainer>
-			<h1>Sign Up</h1>
+		<CreateUserContainer>
+			<h1>Create User</h1>
 			<UserForm settings={formSettings} />
-		</SignUpContainer>
+		</CreateUserContainer>
 	);
 }
 
-export default SignUp;
+export default CreateUser;
