@@ -28,7 +28,7 @@ export async function postUser({ formData }) {
 	return res.data;
 }
 
-export async function putUser({ userId, formData, user }) {
+export async function putUser({ userId, formData, currentUser }) {
 	const res = await axios.put(
 		`${process.env.REACT_APP_API_BASE_URL}/users/${userId}`,
 		formData,
@@ -36,7 +36,7 @@ export async function putUser({ userId, formData, user }) {
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${user.token}`,
+				Authorization: `Bearer ${currentUser.token}`,
 			},
 		}
 	);
@@ -44,14 +44,14 @@ export async function putUser({ userId, formData, user }) {
 	return res.data;
 }
 
-export async function deleteUser({ userId, user }) {
+export async function deleteUser({ userId, currentUser }) {
 	const res = await axios.delete(
 		`${process.env.REACT_APP_API_BASE_URL}/user/${userId}`,
 		{
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${user.token}`,
+				Authorization: `Bearer ${currentUser.token}`,
 			},
 		}
 	);

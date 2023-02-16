@@ -21,14 +21,16 @@ const StyledPostSummary = styled.div`
 const StyledControlsDiv = styled.div``;
 
 function PostSummary(props) {
-	const user = useContext(UserContext);
+	const currentUser = useContext(UserContext);
 	const queryClient = useQueryClient();
 	const { mutate, isLoading: isLoadingMutate } = useMutation({
 		mutationFn: (postId) => {
-			return deletePost(postId, user);
+			return deletePost({ postId, currentUser });
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['users', user.id] });
+			queryClient.invalidateQueries({
+				queryKey: ['users', currentUser.id],
+			});
 			queryClient.invalidateQueries({ queryKey: ['posts'] });
 		},
 	});
@@ -51,7 +53,8 @@ function PostSummary(props) {
 				</p>
 				<p>{props.post.creation_date}</p>
 				<p>{props.post.status}</p>
-				{(props.post.user._id === user.id || user.admin) && (
+				{(props.post.user._id === currentUser.id ||
+					currentUser.admin) && (
 					<StyledControlsDiv>
 						<Link to={`/dashboard/posts/${props.post._id}`}>
 							<button disabled={isLoadingMutate}>Edit</button>

@@ -21,12 +21,12 @@ const StyledUserSummary = styled.div`
 const StyledControlsDiv = styled.div``;
 
 function UserSummary(props) {
-	const user = useContext(UserContext);
+	const currentUser = useContext(UserContext);
 	const queryClient = useQueryClient();
 	const { mutate, isLoading: isLoadingMutate } = useMutation({
 		mutationFn: (event) => {
 			event.preventDefault();
-			return deleteUser(props.user._id, user);
+			return deleteUser({ userId: props.user._id, currentUser });
 		},
 		onSuccess: () => {
 			return queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -42,7 +42,7 @@ function UserSummary(props) {
 				<p>{props.user.first_name + ' ' + props.user.last_name}</p>
 				<p>{props.user.admin ? 'Admin' : 'User'}</p>
 				<p>{props.user.status}</p>
-				{(props.user._id === user.id || user.admin) && (
+				{(props.user._id === currentUser.id || currentUser.admin) && (
 					<StyledControlsDiv>
 						<Link to={`/dashboard/admin/users/${props.user._id}`}>
 							<button disabled={isLoadingMutate}>Edit</button>

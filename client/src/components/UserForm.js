@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import UserContext from '../context/userContext';
 
 import Messages from './Messages';
-import { getUser, postUser, putUser } from '../api/user';
+import { postUser, putUser } from '../api/user';
 
 const StyledUserFormContainer = styled.div``;
 
@@ -21,31 +21,23 @@ function UserForm(props) {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [messages, setMessages] = useState([]);
-	const [formData, setFormData] = useState({
-		first_name: '',
-		last_name: '',
-		email: '',
-		password: '',
-		password_confirm: '',
-		admin: false,
-	});
+	const [formData, setFormData] = useState(
+		props.user || {
+			first_name: '',
+			last_name: '',
+			email: '',
+			password: '',
+			password_confirm: '',
+			admin: false,
+		}
+	);
 	const { isEdit, isOwn } = props.settings;
 
-	const { error } = useQuery({
-		queryKey: ['users', isEdit || currentUser?.id],
-		enabled: isEdit || isOwn ? true : false,
-		queryFn: () => getUser({ userId: id || currentUser.id }),
-		onSuccess: (data) => {
-			setFormData((prevFormData) => ({
-				...prevFormData,
-				...data.user,
-				password: '',
-				password_confirm: '',
-			}));
-		},
-	});
-
-	const { mutate, isLoading: isLoadingMutate } = useMutation({
+	const {
+		mutate,
+		isLoading: isLoadingMutate,
+		error,
+	} = useMutation({
 		mutationFn: async (event) => {
 			event.preventDefault();
 			setMessages([]);
