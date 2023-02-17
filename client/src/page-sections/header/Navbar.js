@@ -15,11 +15,17 @@ const StyledNavContainer = styled.div`
 `;
 
 const StyledSiteTitle = styled.div`
-	font-size: 1.5rem;
+	font-size: 2rem;
+	font-weight: 800;
 `;
 
 const StyledNavRight = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 15px;
 	font-size: 1.2rem;
+	font-weight: 800;
 `;
 
 const StyledUl = styled.ul`
@@ -31,13 +37,14 @@ const StyledUl = styled.ul`
 const StyledLi = styled.li``;
 
 const sharedLinkStyle = css`
+	color: ${(props) => props.theme.text};
 	text-decoration: none;
 `;
 
 const StyledNavLink = styled(NavLink)`
 	${sharedLinkStyle}
 	&.active {
-		color: red;
+		color: ${(props) => props.theme.accent};
 	}
 `;
 
@@ -58,7 +65,7 @@ function Navbar(props) {
 		<StyledNavBar aria-label='primary'>
 			<StyledNavContainer>
 				<StyledSiteTitle>
-					<StyledNavLink to='/'>Community Blog</StyledNavLink>
+					<StyledLink to='/'>Community Blog</StyledLink>
 				</StyledSiteTitle>
 				<StyledNavRight>
 					<StyledUl>
@@ -78,13 +85,6 @@ function Navbar(props) {
 								</StyledNavLink>
 							</StyledLi>
 						)}
-						{user?.admin && (
-							<StyledLi>
-								<StyledNavLink to='dashboard/admin'>
-									Admin Panel
-								</StyledNavLink>
-							</StyledLi>
-						)}
 						<StyledLi>
 							{user ? (
 								<StyledLink onClick={handleLogoutClick}>
@@ -97,6 +97,11 @@ function Navbar(props) {
 							)}
 						</StyledLi>
 					</StyledUl>
+					<div>
+						<button onClick={props.handleToggleTheme}>
+							Toggle Theme
+						</button>
+					</div>
 				</StyledNavRight>
 			</StyledNavContainer>
 		</StyledNavBar>

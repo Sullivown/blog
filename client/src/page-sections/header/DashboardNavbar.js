@@ -12,11 +12,16 @@ const StyledNavContainer = styled.div`
 	align-items: center;
 	gap: 15px;
 	padding: 10px;
-	border-top: 1px dashed black;
+	border-top: 1px dashed ${(props) => props.theme.text};
 `;
 
-const StyledNavRight = styled.div`
+const StyledNavCenter = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 15px;
 	font-size: 1.2rem;
+	font-weight: 800;
 `;
 
 const StyledUl = styled.ul`
@@ -29,8 +34,9 @@ const StyledLi = styled.li``;
 
 const StyledNavLink = styled(NavLink)`
 	text-decoration: none;
+	color: ${(props) => props.theme.text};
 	&.active {
-		color: red;
+		color: ${(props) => props.theme.accent};
 	}
 `;
 
@@ -40,7 +46,7 @@ function DashboardNavbar(props) {
 	return (
 		<StyledDashboardNavBar aria-label='secondary'>
 			<StyledNavContainer>
-				<StyledNavRight>
+				<StyledNavCenter>
 					<StyledUl>
 						<StyledLi>
 							<StyledNavLink end to='dashboard/posts/create'>
@@ -72,7 +78,7 @@ function DashboardNavbar(props) {
 							</StyledNavLink>
 						</StyledLi>
 					</StyledUl>
-				</StyledNavRight>
+				</StyledNavCenter>
 			</StyledNavContainer>
 		</StyledDashboardNavBar>
 	);

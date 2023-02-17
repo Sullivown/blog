@@ -7,7 +7,8 @@ import CommentForm from './CommentForm';
 import UserContext from '../context/userContext';
 
 const StyledPostDetailContainer = styled.div`
-	border: 1px solid black;
+	min-width: 500px;
+	border: 1px solid ${(props) => props.theme.secondary};
 	margin-top: 15px;
 `;
 

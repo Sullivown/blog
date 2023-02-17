@@ -18,13 +18,13 @@ import AllPosts from '../pages/dashboard/admin/AllPosts';
 import Admin from '../pages/dashboard/admin/Admin';
 import Account from '../pages/dashboard/Account';
 import AllUsers from '../pages/dashboard/admin/AllUsers';
-import UserForm from '../components/UserForm';
 import NotFound from '../pages/NotFound';
 import CreateUser from '../pages/dashboard/admin/CreateUser';
 import EditUser from '../pages/dashboard/admin/EditUser';
 
 const StyledMain = styled.main`
-	width: 100%;
+	background-color: ${(props) => props.theme.bg};
+	color: ${(props) => props.theme.text};
 `;
 
 function Main(props) {
