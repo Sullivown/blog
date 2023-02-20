@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const StyledUserDetailContainer = styled.div`
-	border: 1px solid black;
+	width: clamp(250px, 1000px, 90vw);
+	border: 1px solid ${(props) => props.theme.secondary};
 	margin-top: 15px;
+	padding: 15px;
 `;
 
 const StyledUserDetail = styled.div`

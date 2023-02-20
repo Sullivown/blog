@@ -4,13 +4,10 @@ import styled from 'styled-components';
 import { postComment, putComment } from '../api/comment';
 import UserContext from '../context/userContext';
 
-const StyledCommentFormContainer = styled.div``;
+import Form from '../elements/Form';
+import Button from '../elements/Button';
 
-const StyledCommentForm = styled.form`
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-`;
+const StyledCommentFormContainer = styled.div``;
 
 function CommentForm(props) {
 	const currentUser = useContext(UserContext);
@@ -60,17 +57,18 @@ function CommentForm(props) {
 
 	return (
 		<StyledCommentFormContainer>
-			<StyledCommentForm onSubmit={handleSubmit}>
+			<Form onSubmit={handleSubmit}>
 				<textarea
 					id={props.post._id + '_add_comment_content'}
 					name='content'
 					value={formData.content}
+					placeholder='Write comment'
 					onChange={handleChange}
 				></textarea>
-				<button disabled={isLoadingMutate}>
+				<Button disabled={isLoadingMutate}>
 					{props.isBeingEdited ? 'Save' : 'Add Comment'}
-				</button>
-			</StyledCommentForm>
+				</Button>
+			</Form>
 		</StyledCommentFormContainer>
 	);
 }

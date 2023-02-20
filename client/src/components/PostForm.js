@@ -8,9 +8,10 @@ import UserContext from '../context/userContext';
 import Messages from './Messages';
 import { postPost, putPost } from '../api/post';
 
-const StyledPostFormContainer = styled.div``;
+import Form from '../elements/Form';
+import Button from '../elements/Button';
 
-const StyledPostForm = styled.form``;
+const StyledPostFormContainer = styled.div``;
 
 function PostForm(props) {
 	const currentUser = useContext(UserContext);
@@ -94,7 +95,7 @@ function PostForm(props) {
 		<StyledPostFormContainer>
 			{messages.length > 0 && <Messages messages={messages} />}
 
-			<StyledPostForm onSubmit={(event) => mutate(event)}>
+			<Form onSubmit={(event) => mutate(event)}>
 				<label htmlFor='title'>Title</label>
 				<input
 					id='title'
@@ -122,10 +123,10 @@ function PostForm(props) {
 					<option value='Draft'>Draft</option>
 					<option value='Published'>Published</option>
 				</select>
-				<button type='submit' disabled={isLoadingMutate}>
+				<Button type='submit' disabled={isLoadingMutate}>
 					Save Post
-				</button>
-			</StyledPostForm>
+				</Button>
+			</Form>
 		</StyledPostFormContainer>
 	);
 }

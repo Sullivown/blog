@@ -14,7 +14,9 @@ const StyledPostDetailContainer = styled.div`
 	padding: 15px;
 `;
 
-const StyledPostDetail = styled.div``;
+const StyledPostDetail = styled.div`
+	margin-bottom: 15px;
+`;
 
 const StyledPostHeader = styled.div`
 	line-height: 5px;

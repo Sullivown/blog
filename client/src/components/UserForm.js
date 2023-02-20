@@ -8,13 +8,10 @@ import UserContext from '../context/userContext';
 import Messages from './Messages';
 import { postUser, putUser } from '../api/user';
 
-const StyledUserFormContainer = styled.div``;
+import Form from '../elements/Form';
+import Button from '../elements/Button';
 
-const StyledUserForm = styled.form`
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-`;
+const StyledUserFormContainer = styled.div``;
 
 function UserForm(props) {
 	const currentUser = useContext(UserContext);
@@ -139,7 +136,7 @@ function UserForm(props) {
 	return (
 		<StyledUserFormContainer>
 			{messages.length > 0 && <Messages messages={messages} />}
-			<StyledUserForm onSubmit={(event) => mutate(event)}>
+			<Form onSubmit={(event) => mutate(event)}>
 				<label htmlFor='first_name'>First Name</label>
 				<input
 					id='first_name'
@@ -199,10 +196,10 @@ function UserForm(props) {
 						/>
 					</>
 				)}
-				<button type='submit' disabled={isLoadingMutate}>
+				<Button type='submit' disabled={isLoadingMutate}>
 					{isEdit ? 'Update Details' : 'Create Account'}
-				</button>
-			</StyledUserForm>
+				</Button>
+			</Form>
 		</StyledUserFormContainer>
 	);
 }
