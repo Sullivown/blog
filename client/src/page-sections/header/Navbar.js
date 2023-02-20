@@ -1,6 +1,10 @@
 import React, { useContext } from 'react';
-import styled, { css } from 'styled-components';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
+import Link from '../../elements/Link';
+import NavLink from '../../elements/NavLink';
+
 import UserContext from '../../context/userContext';
 
 const StyledNavBar = styled.nav``;
@@ -36,22 +40,6 @@ const StyledUl = styled.ul`
 
 const StyledLi = styled.li``;
 
-const sharedLinkStyle = css`
-	color: ${(props) => props.theme.text};
-	text-decoration: none;
-`;
-
-const StyledNavLink = styled(NavLink)`
-	${sharedLinkStyle}
-	&.active {
-		color: ${(props) => props.theme.accent};
-	}
-`;
-
-const StyledLink = styled(Link)`
-	${sharedLinkStyle}
-`;
-
 function Navbar(props) {
 	const user = useContext(UserContext);
 	const navigate = useNavigate();
@@ -65,35 +53,29 @@ function Navbar(props) {
 		<StyledNavBar aria-label='primary'>
 			<StyledNavContainer>
 				<StyledSiteTitle>
-					<StyledLink to='/'>Community Blog</StyledLink>
+					<Link to='/'>Community Blog</Link>
 				</StyledSiteTitle>
 				<StyledNavRight>
 					<StyledUl>
 						<StyledLi>
-							<StyledNavLink to='/about'>About</StyledNavLink>
+							<NavLink to='/about'>About</NavLink>
 						</StyledLi>
 						<StyledLi>
-							<StyledNavLink to='posts'>Posts</StyledNavLink>
+							<NavLink to='posts'>Posts</NavLink>
 						</StyledLi>
 						<StyledLi>
-							<StyledNavLink to='users'>Users</StyledNavLink>
+							<NavLink to='users'>Users</NavLink>
 						</StyledLi>
 						{user && (
 							<StyledLi>
-								<StyledNavLink to='dashboard'>
-									Dashboard
-								</StyledNavLink>
+								<NavLink to='dashboard'>Dashboard</NavLink>
 							</StyledLi>
 						)}
 						<StyledLi>
 							{user ? (
-								<StyledLink onClick={handleLogoutClick}>
-									Log Out
-								</StyledLink>
+								<Link onClick={handleLogoutClick}>Log Out</Link>
 							) : (
-								<StyledNavLink to='login'>
-									Login / Signup
-								</StyledNavLink>
+								<NavLink to='login'>Login / Signup</NavLink>
 							)}
 						</StyledLi>
 					</StyledUl>

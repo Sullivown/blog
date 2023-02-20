@@ -7,6 +7,8 @@ import PostSummary from './PostSummary';
 const StyledPostList = styled.div`
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	width: 100%;
 `;
 
 function PostList(props) {
