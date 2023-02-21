@@ -24,7 +24,6 @@ module.exports.user_detail = function (req, res, next) {
 			},
 			user_posts(callback) {
 				Post.find({ user: req.params.id })
-					.where({ status: 'Published' })
 					.populate({
 						path: 'user',
 						select: 'first_name last_name',

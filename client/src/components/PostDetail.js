@@ -7,6 +7,8 @@ import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import UserContext from '../context/userContext';
 
+import MetaData from '../elements/MetaData';
+
 const StyledPostDetailContainer = styled.div`
 	width: clamp(250px, 1000px, 90vw);
 	border: 1px solid ${(props) => props.theme.secondary};
@@ -18,17 +20,11 @@ const StyledPostDetail = styled.div`
 	margin-bottom: 15px;
 `;
 
-const StyledPostHeader = styled.div`
-	line-height: 5px;
-`;
+const StyledPostHeader = styled.div``;
 
 const StyledPostContent = styled.div``;
 
 const StyledPostCommentsContainer = styled.div``;
-
-const StyledMetaData = styled.small`
-	color: ${(props) => props.theme.secondary};
-`;
 
 function PostDetail(props) {
 	const currentUser = useContext(UserContext);
@@ -39,19 +35,19 @@ function PostDetail(props) {
 					<Link to={`/posts/${props.post._id}`}>
 						<h2>{props.post.title}</h2>
 					</Link>
-					<Link to={`/users/${props.post.user._id}`}>
-						<StyledMetaData>
-							by{' '}
+					<MetaData>
+						by{' '}
+						<Link to={`/users/${props.post.user._id}`}>
 							{props.post.user.first_name +
 								' ' +
 								props.post.user.last_name}
-						</StyledMetaData>
-					</Link>
+						</Link>
+					</MetaData>
 				</StyledPostHeader>
 				<StyledPostContent>
 					<p>{props.post.content}</p>
 				</StyledPostContent>
-				<StyledMetaData>{props.post.creation_date}</StyledMetaData>
+				<MetaData>{props.post.creation_date}</MetaData>
 			</StyledPostDetail>
 			<StyledPostCommentsContainer>
 				{props.showComments && (

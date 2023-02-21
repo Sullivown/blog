@@ -13,6 +13,10 @@ const StyledForm = styled.form`
 		color: ${(props) => props.theme.text};
 		padding: 5px;
 	}
+
+	> button {
+		align-self: flex-end;
+	}
 `;
 
 export default StyledForm;

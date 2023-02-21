@@ -1,21 +1,31 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deletePost } from '../api/post';
 import UserContext from '../context/userContext';
 
+import Link from '../elements/Link';
+
 const StyledPostSummaryContainer = styled.div`
 	border: 1px solid black;
 	margin-top: 5px;
+	width: clamp(250px, 1000px, 90vw);
+	border: 1px solid ${(props) => props.theme.secondary};
+	padding: 15px;
 `;
 
 const StyledPostSummary = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
+	display: grid;
+	gap: 5px;
+	grid-template-columns: 3fr 1fr auto 1fr auto;
+	grid-template-rows: 1fr;
 	padding: 5px;
+	justify-items: center;
+	align-items: center;
+`;
+
+const StyledPostSummaryTitle = styled.div`
+	justify-self: start;
 `;
 
 const StyledControlsDiv = styled.div``;
@@ -43,9 +53,12 @@ function PostSummary(props) {
 	return (
 		<StyledPostSummaryContainer>
 			<StyledPostSummary>
-				<Link to={`/dashboard/posts/${props.post._id}`}>
-					<h2>{props.post.title}</h2>
-				</Link>
+				<StyledPostSummaryTitle>
+					<Link to={`/dashboard/posts/${props.post._id}`}>
+						<h2>{props.post.title}</h2>
+					</Link>
+				</StyledPostSummaryTitle>
+
 				<p>
 					{props.post.user.first_name +
 						' ' +

@@ -6,9 +6,39 @@ import { deleteComment } from '../api/comment';
 import UserContext from '../context/userContext';
 import CommentForm from './CommentForm';
 
-const StyledCommentDetail = styled.div`
-	border-top: 1px dashed grey;
+import Link from '../elements/Link';
+import MetaData from '../elements/MetaData';
+
+const StyledCommentContainer = styled.div`
+	border-top: 1px dashed ${(props) => props.theme.secondary};
+	margin-top: 15px;
+	margin-bottom: 15px;
 	padding: 15px;
+`;
+
+const StyledCommentHeader = styled.div`
+	font-weight: 500;
+`;
+
+const StyledCommentDetail = styled.div``;
+
+const StyledCommentFooter = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 5px;
+`;
+
+const StyledControlsButton = styled.button`
+	background-color: ${(props) => props.theme.bg};
+	color: ${(props) => props.theme.text};
+	border: none;
+	padding: 0;
+	font-size: 0.8rem;
+
+	&:hover {
+		cursor: pointer;
+		text-decoration: underline;
+	}
 `;
 
 function CommentDetail(props) {
@@ -33,13 +63,13 @@ function CommentDetail(props) {
 			mutate({
 				postId: props.comment.post,
 				commentId: props.comment._id,
-				user: currentUser,
+				currentUser,
 			});
 		}
 	};
 
 	return (
-		<>
+		<StyledCommentContainer>
 			{isBeingEdited ? (
 				<CommentForm
 					post={{ _id: props.comment.post }}
@@ -49,37 +79,42 @@ function CommentDetail(props) {
 				/>
 			) : (
 				<StyledCommentDetail>
+					<StyledCommentHeader>
+						<Link to={`/users/${props.comment.user._id}`}>
+							{props.comment.user.first_name +
+								' ' +
+								props.comment.user.last_name}{' '}
+						</Link>
+						said:
+					</StyledCommentHeader>
 					<p>{props.comment.content}</p>
-					<p>
-						{props.comment.user.first_name +
-							' ' +
-							props.comment.user.last_name}
-					</p>
-					<p>{props.comment.creation_date}</p>
-					{(props.comment.user._id === currentUser?.id ||
-						currentUser?.admin) && (
-						<div>
-							<button
-								value='edit'
-								type='button'
-								onClick={handleControlsClick}
-								disabled={isLoadingMutate}
-							>
-								Edit
-							</button>
-							<button
-								value='delete'
-								type='button'
-								onClick={handleControlsClick}
-								disabled={isLoadingMutate}
-							>
-								Delete
-							</button>
-						</div>
-					)}
+					<StyledCommentFooter>
+						<MetaData>@ {props.comment.creation_date}</MetaData>
+						{(props.comment.user._id === currentUser?.id ||
+							currentUser?.admin) && (
+							<>
+								<StyledControlsButton
+									value='edit'
+									type='button'
+									onClick={handleControlsClick}
+									disabled={isLoadingMutate}
+								>
+									edit
+								</StyledControlsButton>
+								<StyledControlsButton
+									value='delete'
+									type='button'
+									onClick={handleControlsClick}
+									disabled={isLoadingMutate}
+								>
+									delete
+								</StyledControlsButton>
+							</>
+						)}
+					</StyledCommentFooter>
 				</StyledCommentDetail>
 			)}
-		</>
+		</StyledCommentContainer>
 	);
 }
 

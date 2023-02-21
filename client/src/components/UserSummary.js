@@ -11,11 +11,13 @@ const StyledUserSummaryContainer = styled.div`
 `;
 
 const StyledUserSummary = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
+	display: grid;
+	gap: 5px;
+	grid-template-columns: 3fr 1fr auto 1fr auto;
+	grid-template-rows: 1fr;
 	padding: 5px;
+	justify-items: center;
+	align-items: center;
 `;
 
 const StyledControlsDiv = styled.div``;

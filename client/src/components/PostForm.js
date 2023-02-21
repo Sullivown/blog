@@ -11,7 +11,9 @@ import { postPost, putPost } from '../api/post';
 import Form from '../elements/Form';
 import Button from '../elements/Button';
 
-const StyledPostFormContainer = styled.div``;
+const StyledPostFormContainer = styled.div`
+	width: 100%;
+`;
 
 function PostForm(props) {
 	const currentUser = useContext(UserContext);
@@ -110,6 +112,7 @@ function PostForm(props) {
 					id='content'
 					name='content'
 					placeholder='Post Content'
+					rows='10'
 					value={formData.content}
 					onChange={handleChange}
 				></textarea>

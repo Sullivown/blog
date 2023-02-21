@@ -40,7 +40,13 @@ function User() {
 			<h2>Posts:</h2>
 			<PostListWithLoading
 				isLoading={isLoading}
-				posts={data ? data.user_posts : []}
+				posts={
+					data
+						? data.user_posts.filter(
+								(post) => post.status === 'Published'
+						  )
+						: []
+				}
 				summary={false}
 				showComments={false}
 			/>

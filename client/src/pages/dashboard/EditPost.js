@@ -11,6 +11,7 @@ const EditPostContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	width: clamp(250px, 1000px, 90vw);
 `;
 
 const PostFormWithLoading = WithLoading(PostForm);

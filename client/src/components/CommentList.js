@@ -3,7 +3,10 @@ import styled from 'styled-components';
 
 import CommentDetail from './CommentDetail';
 
-const StyledCommentList = styled.div``;
+const StyledCommentList = styled.div`
+	border-bottom: 1px dashed ${(props) => props.theme.secondary};
+	margin-bottom: 15px;
+`;
 
 function CommentList(props) {
 	const commentElements = props.comments.map((comment) => (
