@@ -4,11 +4,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import Messages from './Messages';
+import Form from '../elements/Form';
+import Button from '../elements/Button';
 import { postLogin } from '../api/auth';
 
 const StyledLoginFormContainer = styled.div``;
-
-const StyledLoginForm = styled.form``;
 
 function LoginForm(props) {
 	const navigate = useNavigate();
@@ -44,7 +44,7 @@ function LoginForm(props) {
 				<Messages messages={messages} messagesType='error' />
 			)}
 
-			<StyledLoginForm onSubmit={(event) => mutate(event)}>
+			<Form onSubmit={(event) => mutate(event)}>
 				<label htmlFor='email'>Email</label>
 				<input
 					id='email'
@@ -64,8 +64,8 @@ function LoginForm(props) {
 					onChange={handleChange}
 					required
 				></input>
-				<button type='submit'>Login</button>
-			</StyledLoginForm>
+				<Button type='submit'>Login</Button>
+			</Form>
 		</StyledLoginFormContainer>
 	);
 }

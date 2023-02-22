@@ -10,9 +10,12 @@ const LoginContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	gap: 25px;
 `;
 
-const StyledDiv = styled.div``;
+const StyledDiv = styled.div`
+	text-align: center;
+`;
 
 function Login(props) {
 	const user = useContext(UserContext);
@@ -23,10 +26,8 @@ function Login(props) {
 			<LoginForm setUser={props.setUser} />
 			{!user && (
 				<StyledDiv>
-					<p>
-						Don't have an an account?{' '}
-						<Link to='/signup'>Create an account here.</Link>
-					</p>
+					<p>Don't have an an account?</p>
+					<Link to='/signup'>Create an account here.</Link>
 				</StyledDiv>
 			)}
 		</LoginContainer>
