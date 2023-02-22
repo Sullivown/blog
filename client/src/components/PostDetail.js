@@ -12,7 +12,7 @@ import MetaData from '../elements/MetaData';
 const StyledPostDetailContainer = styled.div`
 	width: clamp(250px, 1000px, 90vw);
 	border: 1px solid ${(props) => props.theme.secondary};
-	margin-top: 15px;
+	margin-top: 50px;
 	padding: 15px;
 `;
 

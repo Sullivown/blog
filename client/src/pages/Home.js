@@ -21,13 +21,18 @@ const CallToAction = styled.div`
 	align-items: center;
 	justify-content: center;
 	gap: 15px;
-	border: 1px solid ${(props) => props.theme.secondary};
+	background-color: ${(props) => props.theme.text};
+	color: ${(props) => props.theme.bg};
 	border-radius: 15px;
 	padding: 30px;
 	margin-top: 50px;
 	font-size: 1.5rem;
 	text-align: center;
 	width: 80%;
+`;
+
+const CallToActionLink = styled(Link)`
+	color: ${(props) => props.theme.bg};
 `;
 
 function Home() {
@@ -40,8 +45,8 @@ function Home() {
 			<p>A (can you guess?) community blogging/journaling app.</p>
 			<FeaturesGrid />
 			<CallToAction>
-				Want to get invloved?
-				<Link to='signup'>Sign up!</Link>
+				Want to get involved?
+				<CallToActionLink to='signup'>Sign up!</CallToActionLink>
 			</CallToAction>
 		</HomeContainer>
 	);
