@@ -1,7 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-
-import UserContext from '../context/userContext';
 
 const AboutContainer = styled.div`
 	display: flex;
@@ -10,8 +8,6 @@ const AboutContainer = styled.div`
 `;
 
 function About() {
-	const user = useContext(UserContext);
-
 	return (
 		<AboutContainer>
 			<h1>About</h1>

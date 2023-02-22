@@ -1,7 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-
-import UserContext from '../context/userContext';
 
 import FeaturesGrid from '../components/FeaturesGrid';
 import Link from '../elements/Link';
@@ -36,8 +34,6 @@ const CallToActionLink = styled(Link)`
 `;
 
 function Home() {
-	const user = useContext(UserContext);
-
 	return (
 		<HomeContainer>
 			<h1>Community Blog</h1>
