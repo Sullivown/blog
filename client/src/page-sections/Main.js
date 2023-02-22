@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Home from '../pages/Home';
+import About from '../pages/About';
 import SignUp from '../pages/SignUp';
 import Login from '../pages/Login';
 import Post from '../pages/Post';
@@ -33,6 +34,7 @@ function Main(props) {
 		<StyledMain>
 			<Routes>
 				<Route path='/' element={<Home />} />
+				<Route path='/about' element={<About />} />
 				<Route
 					path='/login'
 					element={
