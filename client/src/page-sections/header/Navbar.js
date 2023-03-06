@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Link from '../../elements/Link';
 import NavLink from '../../elements/NavLink';
+import StyledButton from '../../elements/Button';
 
 import UserContext from '../../context/userContext';
 
@@ -16,11 +17,14 @@ const StyledNavContainer = styled.div`
 	align-items: center;
 	gap: 15px;
 	padding: 25px;
+	flex-wrap: wrap;
+	text-align: center;
 `;
 
 const StyledSiteTitle = styled.div`
 	font-size: 2rem;
 	font-weight: 800;
+	text-align: center;
 `;
 
 const StyledNavRight = styled.div`
@@ -28,14 +32,17 @@ const StyledNavRight = styled.div`
 	flex-direction: row;
 	align-items: center;
 	gap: 15px;
-	font-size: 1.2rem;
-	font-weight: 800;
+	justify-content: center;
+	flex-wrap: wrap;
 `;
 
 const StyledUl = styled.ul`
 	display: flex;
+	align-items: center;
+	justify-content: center;
 	gap: 15px;
 	list-style-type: none;
+	padding-inline-start: 0px;
 `;
 
 const StyledLi = styled.li``;
@@ -80,9 +87,9 @@ function Navbar(props) {
 						</StyledLi>
 					</StyledUl>
 					<div>
-						<button onClick={props.handleToggleTheme}>
+						<StyledButton onClick={props.handleToggleTheme}>
 							Toggle Theme
-						</button>
+						</StyledButton>
 					</div>
 				</StyledNavRight>
 			</StyledNavContainer>

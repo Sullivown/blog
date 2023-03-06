@@ -22,6 +22,7 @@ import AllUsers from '../pages/dashboard/admin/AllUsers';
 import NotFound from '../pages/NotFound';
 import CreateUser from '../pages/dashboard/admin/CreateUser';
 import EditUser from '../pages/dashboard/admin/EditUser';
+import DashboardHome from '../pages/dashboard/DashboardHome';
 
 const StyledMain = styled.main`
 	background-color: ${(props) => props.theme.bg};
@@ -65,6 +66,7 @@ function Main(props) {
 						props.user ? <Dashboard /> : <Navigate to='/login' />
 					}
 				>
+					<Route index element={<DashboardHome />} />
 					<Route path='posts'>
 						<Route index element={<MyPosts />} />
 						<Route path='create' element={<CreatePost />} />
