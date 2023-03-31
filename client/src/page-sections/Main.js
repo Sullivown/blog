@@ -28,6 +28,7 @@ const StyledMain = styled.main`
 	background-color: ${(props) => props.theme.bg};
 	color: ${(props) => props.theme.text};
 	margin-bottom: 15px;
+	padding: 10px;
 `;
 
 function Main(props) {

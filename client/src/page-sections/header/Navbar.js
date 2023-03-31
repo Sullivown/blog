@@ -13,7 +13,7 @@ const StyledNavBar = styled.nav``;
 const StyledNavContainer = styled.div`
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	gap: 15px;
 	padding: 25px;
@@ -34,6 +34,7 @@ const StyledNavRight = styled.div`
 	gap: 15px;
 	justify-content: center;
 	flex-wrap: wrap;
+	margin-left: auto;
 `;
 
 const StyledUl = styled.ul`

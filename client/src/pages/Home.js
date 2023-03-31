@@ -11,6 +11,7 @@ const HomeContainer = styled.div`
 	justify-content: space-between;
 	width: 100%;
 	min-height: 80vh;
+	text-align: center;
 `;
 
 const CallToAction = styled.div`
