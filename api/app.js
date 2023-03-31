@@ -34,8 +34,14 @@ passport.deserializeUser((id, done) => {
 	User.findById(id, (err, user) => done(err, user));
 });
 
+//CORS settings
+var corsOptions = {
+	origin: 'https://sullivown.github.io/blog/',
+	optionsSuccessStatus: 200,
+};
+
 app.use(passport.initialize());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
